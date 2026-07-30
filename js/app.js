@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const tableOfContents = document.getElementById('tableOfContents');
   const readingProgressBar = document.getElementById('readingProgressBar');
   const relatedNotesGrid = document.getElementById('relatedNotesGrid');
+  const giscusContainer = document.getElementById('giscusContainer');
 
   // Global Actions
   const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -338,11 +339,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render Connected / Related Notes
     renderRelatedNotes(post);
 
+    // Render Giscus Discussion Widget
+    renderGiscusComments(post.title);
+
     // Bookmark State
     detailBookmarkBtn.innerHTML = `<i data-lucide="bookmark" class="w-4 h-4 ${post.bookmarked ? 'fill-amber-400 text-amber-400' : ''}"></i>`;
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
     if (window.lucide) lucide.createIcons();
+  }
+
+  // Render Giscus Comments
+  function renderGiscusComments(termTitle) {
+    if (!giscusContainer) return;
+    giscusContainer.innerHTML = ''; // Reset container
+
+    const giscusScript = document.createElement('script');
+    giscusScript.src = 'https://giscus.app/client.js';
+    giscusScript.setAttribute('data-repo', 'chunkingview/chunking-view');
+    giscusScript.setAttribute('data-repo-id', 'R_kgDOMxxx'); // Will be configured on repo creation
+    giscusScript.setAttribute('data-category', 'General');
+    giscusScript.setAttribute('data-category-id', 'DIC_kwDOMxxx');
+    giscusScript.setAttribute('data-mapping', 'title');
+    giscusScript.setAttribute('data-term', termTitle);
+    giscusScript.setAttribute('data-strict', '0');
+    giscusScript.setAttribute('data-reactions-enabled', '1');
+    giscusScript.setAttribute('data-emit-metadata', '0');
+    giscusScript.setAttribute('data-input-position', 'top');
+    giscusScript.setAttribute('data-theme', isDarkMode ? 'dark_dimmed' : 'light');
+    giscusScript.setAttribute('data-lang', 'en');
+    giscusScript.setAttribute('crossorigin', 'anonymous');
+    giscusScript.async = true;
+
+    giscusContainer.appendChild(giscusScript);
   }
 
   // Render Connected / Related Notes
