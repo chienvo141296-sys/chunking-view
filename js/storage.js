@@ -1,8 +1,8 @@
 // LocalStorage & Post Data Management Layer
 
-const STORAGE_KEY_POSTS = 'dev_odyssey_posts_v1';
-const STORAGE_KEY_ROADMAP = 'dev_odyssey_roadmap_v1';
-const STORAGE_KEY_PROFILE = 'chunking_view_profile_v1';
+const STORAGE_KEY_POSTS = 'chunking_view_posts_v2';
+const STORAGE_KEY_ROADMAP = 'chunking_view_roadmap_v2';
+const STORAGE_KEY_PROFILE = 'chunking_view_profile_v2';
 
 const DEFAULT_PROFILE = {
   name: "Software Engineer",
@@ -23,12 +23,14 @@ class StorageManager {
     }
     try {
       const posts = JSON.parse(raw);
-      posts.forEach(p => {
-        if (!p.growthStage) p.growthStage = 'Budding';
-      });
+      if (!Array.isArray(posts) || posts.length === 0) {
+        this.savePosts(INITIAL_POSTS);
+        return INITIAL_POSTS;
+      }
       return posts;
     } catch (e) {
       console.error('Failed to parse posts from storage', e);
+      this.savePosts(INITIAL_POSTS);
       return INITIAL_POSTS;
     }
   }
@@ -52,8 +54,7 @@ class StorageManager {
       const newPost = {
         id: postData.id || `post-${Date.now()}`,
         title: postData.title,
-        category: postData.category,
-        growthStage: postData.growthStage || 'Seedling',
+        category: postData.category || 'Personal Learning',
         excerpt: postData.excerpt || this.generateExcerpt(postData.content),
         content: postData.content,
         tags: postData.tags || [],
@@ -139,10 +140,8 @@ class StorageManager {
   static exportPostMD(post) {
     const mdContent = `---
 title: "${post.title}"
-category: "${post.category}"
-growthStage: "${post.growthStage || 'Seedling'}"
 date: "${post.date}"
-tags: [${post.tags.map(t => `"${t}"`).join(', ')}]
+tags: [${(post.tags || []).map(t => `"${t}"`).join(', ')}]
 cover: "${post.cover}"
 ---
 
