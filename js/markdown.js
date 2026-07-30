@@ -1,4 +1,4 @@
-// Markdown Parsing & Syntax Highlighting Engine
+// Markdown Parsing & Syntax Highlighting Engine (With XSS Sanitization)
 
 class MarkdownEngine {
   static init() {
@@ -27,8 +27,11 @@ class MarkdownEngine {
   static render(markdownText) {
     if (!markdownText) return '';
 
-    // Convert [[Wikilinks]] to HTML links before marked parsing
-    const processedText = markdownText.replace(/\[\[([^\]]+)\]\]/g, (match, title) => {
+    // 1. Sanitize raw script tags for XSS protection
+    const sanitizedText = markdownText.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
+
+    // 2. Convert [[Wikilinks]] to HTML links
+    const processedText = sanitizedText.replace(/\[\[([^\]]+)\]\]/g, (match, title) => {
       const cleanTitle = title.trim();
       return `<a href="#" class="wikilink-pill inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-indigo-950/80 text-indigo-300 border border-indigo-800/80 text-xs font-semibold hover:border-indigo-500 hover:text-white transition" data-wikilink="${cleanTitle}"><i data-lucide="link" class="w-3 h-3"></i> ${cleanTitle}</a>`;
     });
