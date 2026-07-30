@@ -1,14 +1,6 @@
 // LocalStorage & Post Data Management Layer
 
 const STORAGE_KEY_POSTS = 'chunking_view_posts_v3';
-const ALL_STORAGE_KEYS = [
-  'chunking_view_posts_v3',
-  'chunking_view_posts_v2',
-  'chunking_view_posts_v1',
-  'dev_odyssey_posts_v1',
-  'dev_odyssey_posts'
-];
-
 const STORAGE_KEY_ROADMAP = 'chunking_view_roadmap_v2';
 const STORAGE_KEY_PROFILE = 'chunking_view_profile_v2';
 
@@ -26,28 +18,39 @@ class StorageManager {
   static getPosts() {
     const postMap = new Map();
 
-    // 1. Scan across ALL current and historical storage keys
-    for (const key of ALL_STORAGE_KEYS) {
-      const raw = localStorage.getItem(key);
-      if (raw) {
-        try {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) {
-            parsed.forEach(post => {
-              if (post && post.id && !postMap.has(post.id)) {
-                postMap.set(post.id, post);
+    // 1. Universal Scanner: Inspect ALL keys in browser localStorage for any saved posts
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (!key) continue;
+
+        const raw = localStorage.getItem(key);
+        if (raw && (raw.startsWith('[') || raw.startsWith('{'))) {
+          try {
+            const parsed = JSON.parse(raw);
+            const items = Array.isArray(parsed) ? parsed : [parsed];
+            items.forEach(post => {
+              if (post && typeof post === 'object' && post.title && post.content) {
+                const uniqueKey = post.id || post.title;
+                if (!postMap.has(uniqueKey)) {
+                  postMap.set(uniqueKey, post);
+                }
               }
             });
+          } catch (err) {
+            // Ignore non-post keys
           }
-        } catch (e) {
-          console.warn(`Could not parse key ${key}`, e);
         }
       }
+    } catch (e) {
+      console.warn('Error scanning localStorage keys:', e);
     }
 
-    // 2. If no user posts found across any keys, seed with INITIAL_POSTS
+    // 2. If no user posts found anywhere in browser storage, seed with default INITIAL_POSTS
     if (postMap.size === 0) {
-      INITIAL_POSTS.forEach(post => postMap.set(post.id, post));
+      INITIAL_POSTS.forEach(post => {
+        postMap.set(post.id || post.title, post);
+      });
     }
 
     const mergedPosts = Array.from(postMap.values());
@@ -56,17 +59,21 @@ class StorageManager {
   }
 
   static savePosts(posts) {
-    localStorage.setItem(STORAGE_KEY_POSTS, JSON.stringify(posts));
+    try {
+      localStorage.setItem(STORAGE_KEY_POSTS, JSON.stringify(posts));
+    } catch (e) {
+      console.error('Failed to save posts to localStorage', e);
+    }
   }
 
   static getPostById(id) {
     const posts = this.getPosts();
-    return posts.find(p => p.id === id);
+    return posts.find(p => p.id === id || p.title === id);
   }
 
   static upsertPost(postData) {
     const posts = this.getPosts();
-    const existingIndex = posts.findIndex(p => p.id === postData.id);
+    const existingIndex = posts.findIndex(p => p.id === postData.id || p.title === postData.title);
 
     if (existingIndex >= 0) {
       posts[existingIndex] = { ...posts[existingIndex], ...postData };
@@ -91,14 +98,14 @@ class StorageManager {
   }
 
   static deletePost(id) {
-    const posts = this.getPosts().filter(p => p.id !== id);
+    const posts = this.getPosts().filter(p => p.id !== id && p.title !== id);
     this.savePosts(posts);
     return posts;
   }
 
   static toggleBookmark(id) {
     const posts = this.getPosts();
-    const post = posts.find(p => p.id === id);
+    const post = posts.find(p => p.id === id || p.title === id);
     if (post) {
       post.bookmarked = !post.bookmarked;
       this.savePosts(posts);
@@ -137,6 +144,7 @@ class StorageManager {
   }
 
   static generateExcerpt(markdownContent) {
+    if (!markdownContent) return '';
     const cleanText = markdownContent
       .replace(/#+\s+/g, '')
       .replace(/```[\s\S]*?```/g, '')
