@@ -42,6 +42,9 @@
     }
   </script>
 
+  <!-- GoatCounter Lightweight Web Analytics -->
+  <script data-goatcounter="https://chunkingview.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -135,7 +138,7 @@
               <span id="bookmarkBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-amber-500 text-slate-950 font-bold text-[10px] rounded-full flex items-center justify-center">0</span>
             </button>
 
-            <!-- + New Post Button (Primary Action - Fixed Non-wrapping whitespace-nowrap) -->
+            <!-- + New Post Button (Primary Action) -->
             <button id="openEditorBtn" class="flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-500 hover:to-blue-600 text-white font-bold text-xs shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition active:scale-95 whitespace-nowrap flex-shrink-0">
               <i data-lucide="plus-circle" class="w-4 h-4"></i>
               <span data-i18n="newPost">New Post</span>
@@ -475,12 +478,12 @@
       <section id="statsSection" class="hidden">
         <div class="max-w-5xl mx-auto space-y-8">
           <div class="text-center mb-8">
-            <h2 class="font-display text-3xl font-extrabold text-slate-900 dark:text-white">Learning Metrics & Analytics</h2>
-            <p class="text-slate-600 dark:text-slate-400 text-sm mt-2">Quantitative overview of my digital garden activity and topics written.</p>
+            <h2 class="font-display text-3xl font-extrabold text-slate-900 dark:text-white">Learning Metrics & Web Analytics</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm mt-2">Quantitative overview of my digital garden activity and live visitor traffic.</p>
           </div>
 
           <!-- Metric Cards Grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
               <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
                 <span data-i18n="statArticles" class="text-xs font-medium">Total Articles</span>
@@ -499,18 +502,37 @@
 
             <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
               <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
+                <span data-i18n="statTodayViews" class="text-xs font-medium">Today's Page Views</span>
+                <i data-lucide="eye" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
+              </div>
+              <div id="statTodayViews" class="text-3xl font-extrabold text-slate-900 dark:text-white">1</div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
+                <span data-i18n="statVisitors" class="text-xs font-medium">Daily Unique Visitors</span>
+                <i data-lucide="users" class="w-4 h-4 text-pink-600 dark:text-pink-400"></i>
+              </div>
+              <div id="statVisitors" class="text-3xl font-extrabold text-slate-900 dark:text-white">1</div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
                 <span data-i18n="statReadTime" class="text-xs font-medium">Est. Total Reading Time</span>
-                <i data-lucide="clock" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
+                <i data-lucide="clock" class="w-4 h-4 text-sky-600 dark:text-sky-400"></i>
               </div>
               <div id="statTotalReadTime" class="text-3xl font-extrabold text-slate-900 dark:text-white">0 min</div>
             </div>
 
             <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
               <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span data-i18n="statCategories" class="text-xs font-medium">Categories Covered</span>
-                <i data-lucide="layers" class="w-4 h-4 text-pink-600 dark:text-pink-400"></i>
+                <span data-i18n="statAnalyticsStatus" class="text-xs font-medium">Live Traffic Tracking</span>
+                <i data-lucide="activity" class="w-4 h-4 text-emerald-500 animate-pulse"></i>
               </div>
-              <div id="statCategoriesCount" class="text-3xl font-extrabold text-slate-900 dark:text-white">3</div>
+              <div class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 mt-1">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                <span data-i18n="statAnalyticsOnline">Active (GoatCounter)</span>
+              </div>
             </div>
           </div>
 

@@ -47,6 +47,11 @@ const TRANSLATIONS = {
     statWords: "Total Words",
     statReadTime: "Est. Total Reading Time",
     statCategories: "Categories Covered",
+    statTodayViews: "Today's Page Views",
+    statVisitors: "Daily Unique Visitors",
+    statAnalyticsStatus: "Live Traffic Tracking",
+    statAnalyticsOnline: "Active (GoatCounter)",
+
     statBreakdown: "Post Breakdown by Stream",
     statTopTopics: "Top Topics & Technologies",
     
@@ -120,6 +125,11 @@ const TRANSLATIONS = {
     statWords: "Tổng số Từ",
     statReadTime: "Tổng Thời gian Đọc",
     statCategories: "Chủ đề Đã viết",
+    statTodayViews: "Lượt xem trong ngày",
+    statVisitors: "Người xem trong ngày",
+    statAnalyticsStatus: "Theo dõi Lượt truy cập",
+    statAnalyticsOnline: "Đang hoạt động (GoatCounter)",
+
     statBreakdown: "Phân bố Bài viết theo Chủ đề",
     statTopTopics: "Công nghệ & Chủ đề Nổi bật",
     
