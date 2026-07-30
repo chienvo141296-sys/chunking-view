@@ -73,88 +73,52 @@
 
   <div class="relative z-10 flex flex-col min-h-screen">
     
-    <!-- Top Navigation Header -->
+    <!-- Clean Minimal Header (Only Chunking view Logo on Left + Action Controls on Right) -->
     <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/90 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800/80 transition-colors">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16 sm:h-20 gap-2">
+        <div class="flex items-center justify-between h-16 sm:h-20">
           
           <!-- Logo & Brand -->
-          <div class="flex items-center gap-3 cursor-pointer flex-shrink-0" id="navBrand">
+          <div class="flex items-center gap-3 cursor-pointer" id="navBrand">
             <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-blue-500 to-pink-500 p-0.5 shadow-lg shadow-indigo-500/20">
               <div class="w-full h-full bg-white dark:bg-slate-950 rounded-[10px] flex items-center justify-center">
                 <i data-lucide="layers" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
               </div>
             </div>
             <div>
-              <span class="font-display text-lg sm:text-xl font-extrabold bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-700 dark:from-white dark:via-slate-200 dark:to-indigo-300 bg-clip-text text-transparent">
+              <span class="font-display text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-700 dark:from-white dark:via-slate-200 dark:to-indigo-300 bg-clip-text text-transparent">
                 Chunking view
               </span>
-              <span id="brandSubtitle" data-i18n="brandSubtitle" class="hidden xl:block text-[11px] text-slate-500 dark:text-slate-400 font-medium">Personal Learning • Tech • Life</span>
+              <span id="brandSubtitle" data-i18n="brandSubtitle" class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium">Personal Learning • Tech • Life</span>
             </div>
           </div>
 
-          <!-- Main Nav Navigation Links -->
-          <nav class="hidden lg:flex items-center gap-1 bg-slate-100 dark:bg-slate-900/60 p-1.5 rounded-full border border-slate-200 dark:border-slate-800/80 max-w-full overflow-x-auto">
-            <button data-view="all" class="nav-tab active px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all whitespace-nowrap">
-              <i data-lucide="layout-grid" class="w-3.5 h-3.5 inline mr-1"></i><span data-i18n="navAll">All Posts</span>
-            </button>
-            <button data-view="engineering" class="nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
-              <i data-lucide="code-2" class="w-3.5 h-3.5 inline mr-1 text-blue-500"></i><span data-i18n="navEngineering">Engineering Path</span>
-            </button>
-            <button data-view="learning" class="nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
-              <i data-lucide="book-open" class="w-3.5 h-3.5 inline mr-1 text-emerald-500"></i><span data-i18n="navLearning">Personal Learning</span>
-            </button>
-            <button data-view="life" class="nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
-              <i data-lucide="heart" class="w-3.5 h-3.5 inline mr-1 text-pink-500"></i><span data-i18n="navLife">View of Life</span>
-            </button>
-            <button data-view="about" class="nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
-              <i data-lucide="user" class="w-3.5 h-3.5 inline mr-1 text-cyan-500"></i><span data-i18n="navAbout">About Me</span>
-            </button>
-            <button data-view="roadmap" class="nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
-              <i data-lucide="milestone" class="w-3.5 h-3.5 inline mr-1 text-amber-500"></i><span data-i18n="navRoadmap">Roadmap</span>
-            </button>
-            <button data-view="stats" class="nav-tab px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white whitespace-nowrap">
-              <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 inline mr-1 text-purple-500"></i><span data-i18n="navStats">Stats</span>
-            </button>
-          </nav>
-
           <!-- Right Action Controls -->
-          <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          <div class="flex items-center gap-2 sm:gap-3">
             <!-- Language Switcher Pill Button (EN / VI) -->
-            <button id="langToggleBtn" title="Switch Language (English / Tiếng Việt)" class="px-2.5 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm text-xs font-bold flex items-center gap-1.5 whitespace-nowrap">
+            <button id="langToggleBtn" title="Switch Language (English / Tiếng Việt)" class="px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm text-xs font-bold flex items-center gap-1.5 whitespace-nowrap">
               <i data-lucide="languages" class="w-4 h-4 text-indigo-500"></i>
               <span id="langCurrentText">EN</span>
             </button>
 
             <!-- Theme Toggle -->
-            <button id="themeToggleBtn" title="Toggle Theme" class="p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm">
+            <button id="themeToggleBtn" title="Toggle Theme" class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm">
               <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-400"></i>
               <i data-lucide="moon" class="w-4 h-4 block dark:hidden text-indigo-600"></i>
             </button>
 
             <!-- Bookmarks Quick Filter -->
-            <button id="bookmarksBtn" title="Saved Posts" class="p-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 hover:border-slate-300 dark:hover:border-slate-700 transition relative shadow-sm">
+            <button id="bookmarksBtn" title="Saved Posts" class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 hover:border-slate-300 dark:hover:border-slate-700 transition relative shadow-sm">
               <i data-lucide="bookmark" class="w-4 h-4"></i>
               <span id="bookmarkBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-amber-500 text-slate-950 font-bold text-[10px] rounded-full flex items-center justify-center">0</span>
             </button>
 
             <!-- + New Post Button (Primary Action) -->
-            <button id="openEditorBtn" class="flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-500 hover:to-blue-600 text-white font-bold text-xs shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition active:scale-95 whitespace-nowrap flex-shrink-0">
+            <button id="openEditorBtn" class="flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-500 hover:to-blue-600 text-white font-bold text-xs shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition active:scale-95 whitespace-nowrap">
               <i data-lucide="plus-circle" class="w-4 h-4"></i>
               <span data-i18n="newPost">New Post</span>
             </button>
           </div>
-        </div>
-
-        <!-- Mobile & Tablet Sub-navigation bar -->
-        <div class="flex lg:hidden overflow-x-auto gap-2 py-2.5 border-t border-slate-200 dark:border-slate-800/60 no-scrollbar">
-          <button data-view="all" class="nav-tab active text-xs font-semibold whitespace-nowrap px-3 py-1.5 rounded-lg bg-indigo-600 text-white" data-i18n="navAll">All Posts</button>
-          <button data-view="engineering" class="nav-tab text-xs font-semibold whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navEngineering">Engineering</button>
-          <button data-view="learning" class="nav-tab text-xs font-semibold whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navLearning">Learning</button>
-          <button data-view="life" class="nav-tab text-xs font-semibold whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navLife">View of Life</button>
-          <button data-view="about" class="nav-tab text-xs font-semibold whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navAbout">About Me</button>
-          <button data-view="roadmap" class="nav-tab text-xs font-semibold whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navRoadmap">Roadmap</button>
-          <button data-view="stats" class="nav-tab text-xs font-semibold whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navStats">Stats</button>
         </div>
       </div>
     </header>
@@ -257,7 +221,7 @@
           </button>
         </div>
 
-        <!-- Category Tabs Sub-header -->
+        <!-- Stream Filter Buttons Bar -->
         <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div class="flex items-center gap-2">
             <h2 id="sectionTitle" data-i18n="latestArticles" class="font-display text-2xl font-bold text-slate-900 dark:text-white">Latest Articles</h2>
