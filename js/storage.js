@@ -1,6 +1,7 @@
 // LocalStorage & Post Data Management Layer
 
 const STORAGE_KEY_POSTS = 'chunking_view_posts_v2';
+const OLD_POST_KEYS = ['dev_odyssey_posts_v1', 'chunking_view_posts_v1'];
 const STORAGE_KEY_ROADMAP = 'chunking_view_roadmap_v2';
 const STORAGE_KEY_PROFILE = 'chunking_view_profile_v2';
 
@@ -16,17 +17,34 @@ const DEFAULT_PROFILE = {
 
 class StorageManager {
   static getPosts() {
-    const raw = localStorage.getItem(STORAGE_KEY_POSTS);
+    // 1. Try primary storage key
+    let raw = localStorage.getItem(STORAGE_KEY_POSTS);
+
+    // 2. Fallback: Check older keys if primary key doesn't exist yet
+    if (!raw) {
+      for (const oldKey of OLD_POST_KEYS) {
+        const oldRaw = localStorage.getItem(oldKey);
+        if (oldRaw) {
+          raw = oldRaw;
+          break;
+        }
+      }
+    }
+
     if (!raw) {
       this.savePosts(INITIAL_POSTS);
       return INITIAL_POSTS;
     }
+
     try {
       const posts = JSON.parse(raw);
       if (!Array.isArray(posts) || posts.length === 0) {
         this.savePosts(INITIAL_POSTS);
         return INITIAL_POSTS;
       }
+
+      // Automatically migrate/persist under current primary key
+      this.savePosts(posts);
       return posts;
     } catch (e) {
       console.error('Failed to parse posts from storage', e);
