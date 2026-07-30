@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const roadmapSection = document.getElementById('roadmapSection');
   const statsSection = document.getElementById('statsSection');
 
+  // i18n & Language Switcher
+  const langToggleBtn = document.getElementById('langToggleBtn');
+  const langCurrentText = document.getElementById('langCurrentText');
+
   // Editor Modal Elements
   const editorModal = document.getElementById('editorModal');
   const openEditorBtn = document.getElementById('openEditorBtn');
@@ -99,11 +103,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Initialize Application
   function init() {
+    updateLanguageUI();
     renderProfileUI();
     renderMainFeed();
     setupEventListeners();
     updateBookmarkBadge();
     if (window.lucide) lucide.createIcons();
+  }
+
+  // --- i18n DYNAMIC UI UPDATER ---
+  function updateLanguageUI() {
+    const currentLang = i18n.getLang();
+    langCurrentText.innerText = currentLang === 'vi' ? 'VI' : 'EN';
+
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.dataset.i18n;
+      el.innerText = i18n.t(key);
+    });
+
+    searchInput.placeholder = i18n.t('searchPlaceholder');
   }
 
   // --- PROFILE UI RENDERER ---
@@ -144,22 +162,23 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- RENDER MAIN FEED & POST CARDS ---
   function renderMainFeed() {
     let posts = StorageManager.getPosts();
+    const isVi = i18n.getLang() === 'vi';
 
     // 1. Stream View Filter
     if (currentView === 'engineering') {
       posts = posts.filter(p => p.category === 'Engineering Path');
-      sectionTitle.innerText = 'Engineering Path & System Architecture';
+      sectionTitle.innerText = isVi ? 'Hành trình Kỹ thuật & Kiến trúc Hệ thống' : 'Engineering Path & System Architecture';
     } else if (currentView === 'learning') {
       posts = posts.filter(p => p.category === 'Personal Learning');
-      sectionTitle.innerText = 'Personal Learning & Book Summaries';
+      sectionTitle.innerText = isVi ? 'Học tập Cá nhân & Tóm tắt Sách' : 'Personal Learning & Book Summaries';
     } else if (currentView === 'life') {
       posts = posts.filter(p => p.category === 'View of Life');
-      sectionTitle.innerText = 'View of Life & Career Philosophy';
+      sectionTitle.innerText = isVi ? 'Quan điểm Sống & Triết lý Sự nghiệp' : 'View of Life & Career Philosophy';
     } else if (currentView === 'bookmarks') {
       posts = posts.filter(p => p.bookmarked === true);
-      sectionTitle.innerText = 'Saved & Bookmarked Entries';
+      sectionTitle.innerText = isVi ? 'Bài viết Đã lưu' : 'Saved & Bookmarked Entries';
     } else {
-      sectionTitle.innerText = 'Latest Articles';
+      sectionTitle.innerText = i18n.t('latestArticles');
     }
 
     // 2. Tag Filter
@@ -210,8 +229,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Create Post Card HTML
   function createPostCardHTML(post) {
+    const isVi = i18n.getLang() === 'vi';
     const categoryClass = post.category === 'Engineering Path' ? 'badge-engineering' :
                           post.category === 'Personal Learning' ? 'badge-learning' : 'badge-life';
+
+    const categoryLabel = isVi ? (post.category === 'Engineering Path' ? 'Hành trình Kỹ thuật' : post.category === 'Personal Learning' ? 'Học tập Cá nhân' : 'Quan điểm Sống') : post.category;
 
     const tagsHtml = (post.tags || []).slice(0, 3).map(tag => 
       `<span class="tag-pill px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-[11px] hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-300 transition cursor-pointer" data-tag="${tag}">#${tag}</span>`
@@ -228,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
           
           <div class="absolute top-3 left-3">
             <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide ${categoryClass}">
-              ${post.category}
+              ${categoryLabel}
             </span>
           </div>
 
@@ -259,7 +281,7 @@ document.addEventListener('DOMContentLoaded', () => {
               ${tagsHtml}
             </div>
             <span class="text-xs text-indigo-600 dark:text-indigo-400 font-medium group-hover:translate-x-1 transition inline-flex items-center gap-1">
-              Read <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+              ${isVi ? 'Đọc bài' : 'Read'} <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
             </span>
           </div>
         </div>
@@ -357,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const giscusScript = document.createElement('script');
     giscusScript.src = 'https://giscus.app/client.js';
     giscusScript.setAttribute('data-repo', 'chunkingview/chunking-view');
-    giscusScript.setAttribute('data-repo-id', 'R_kgDOMxxx'); // Will be configured on repo creation
+    giscusScript.setAttribute('data-repo-id', 'R_kgDOMxxx');
     giscusScript.setAttribute('data-category', 'General');
     giscusScript.setAttribute('data-category-id', 'DIC_kwDOMxxx');
     giscusScript.setAttribute('data-mapping', 'title');
@@ -367,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
     giscusScript.setAttribute('data-emit-metadata', '0');
     giscusScript.setAttribute('data-input-position', 'top');
     giscusScript.setAttribute('data-theme', isDarkMode ? 'dark_dimmed' : 'light');
-    giscusScript.setAttribute('data-lang', 'en');
+    giscusScript.setAttribute('data-lang', i18n.getLang() === 'vi' ? 'vi' : 'en');
     giscusScript.setAttribute('crossorigin', 'anonymous');
     giscusScript.async = true;
 
@@ -528,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (postId) {
       const post = StorageManager.getPostById(postId);
       if (post) {
-        editorModalTitle.innerText = 'Post Studio — Edit Article';
+        editorModalTitle.innerText = i18n.t('editorTitleEdit');
         inputId.value = post.id;
         inputTitle.value = post.title;
         inputCategory.value = post.category;
@@ -538,7 +560,7 @@ document.addEventListener('DOMContentLoaded', () => {
         inputContent.value = post.content || '';
       }
     } else {
-      editorModalTitle.innerText = 'Post Studio — Write New Entry';
+      editorModalTitle.innerText = i18n.t('editorTitleNew');
       postForm.reset();
       inputId.value = '';
       inputContent.value = TEMPLATES.engineering;
@@ -573,6 +595,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- EVENT LISTENERS SETUP ---
   function setupEventListeners() {
+    // Language Toggle Listener
+    langToggleBtn.addEventListener('click', () => {
+      const current = i18n.getLang();
+      const next = current === 'en' ? 'vi' : 'en';
+      i18n.setLang(next);
+      updateLanguageUI();
+      renderMainFeed();
+      if (activePostId) openArticleDetail(activePostId);
+      showToast(next === 'vi' ? 'Đã chuyển sang Tiếng Việt!' : 'Switched to English!', 'info');
+    });
+
     document.querySelectorAll('.nav-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         const view = tab.dataset.view;

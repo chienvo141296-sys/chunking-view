@@ -86,37 +86,43 @@
               <span class="font-display text-xl font-bold bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-700 dark:from-white dark:via-slate-200 dark:to-indigo-300 bg-clip-text text-transparent">
                 Chunking view
               </span>
-              <span class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium">Personal Learning • Tech • Life</span>
+              <span id="brandSubtitle" data-i18n="brandSubtitle" class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium">Personal Learning • Tech • Life</span>
             </div>
           </div>
 
           <!-- Main Nav Navigation Links -->
           <nav class="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-900/60 p-1.5 rounded-full border border-slate-200 dark:border-slate-800/80">
             <button data-view="all" class="nav-tab active px-4 py-2 text-sm font-medium rounded-full transition-all">
-              <i data-lucide="layout-grid" class="w-4 h-4 inline mr-1.5"></i>All Posts
+              <i data-lucide="layout-grid" class="w-4 h-4 inline mr-1.5"></i><span data-i18n="navAll">All Posts</span>
             </button>
             <button data-view="engineering" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-              <i data-lucide="code-2" class="w-4 h-4 inline mr-1.5 text-blue-500"></i>Engineering Path
+              <i data-lucide="code-2" class="w-4 h-4 inline mr-1.5 text-blue-500"></i><span data-i18n="navEngineering">Engineering Path</span>
             </button>
             <button data-view="learning" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-              <i data-lucide="book-open" class="w-4 h-4 inline mr-1.5 text-emerald-500"></i>Personal Learning
+              <i data-lucide="book-open" class="w-4 h-4 inline mr-1.5 text-emerald-500"></i><span data-i18n="navLearning">Personal Learning</span>
             </button>
             <button data-view="life" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-              <i data-lucide="heart" class="w-4 h-4 inline mr-1.5 text-pink-500"></i>View of Life
+              <i data-lucide="heart" class="w-4 h-4 inline mr-1.5 text-pink-500"></i><span data-i18n="navLife">View of Life</span>
             </button>
             <button data-view="about" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-              <i data-lucide="user" class="w-4 h-4 inline mr-1.5 text-cyan-500"></i>About Me
+              <i data-lucide="user" class="w-4 h-4 inline mr-1.5 text-cyan-500"></i><span data-i18n="navAbout">About Me</span>
             </button>
             <button data-view="roadmap" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-              <i data-lucide="milestone" class="w-4 h-4 inline mr-1.5 text-amber-500"></i>Roadmap
+              <i data-lucide="milestone" class="w-4 h-4 inline mr-1.5 text-amber-500"></i><span data-i18n="navRoadmap">Roadmap</span>
             </button>
             <button data-view="stats" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
-              <i data-lucide="bar-chart-3" class="w-4 h-4 inline mr-1.5 text-purple-500"></i>Stats
+              <i data-lucide="bar-chart-3" class="w-4 h-4 inline mr-1.5 text-purple-500"></i><span data-i18n="navStats">Stats</span>
             </button>
           </nav>
 
           <!-- Right Action Controls -->
           <div class="flex items-center gap-3">
+            <!-- Language Switcher Pill Button (EN / VI) -->
+            <button id="langToggleBtn" title="Switch Language (English / Tiếng Việt)" class="px-3 py-2 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm text-xs font-bold flex items-center gap-1.5">
+              <i data-lucide="languages" class="w-4 h-4 text-indigo-500"></i>
+              <span id="langCurrentText">EN</span>
+            </button>
+
             <!-- Theme Toggle -->
             <button id="themeToggleBtn" title="Toggle Theme" class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm">
               <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-400"></i>
@@ -132,20 +138,20 @@
             <!-- + New Post Button (Primary Action) -->
             <button id="openEditorBtn" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-500 hover:to-blue-600 text-white font-medium shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition active:scale-95">
               <i data-lucide="plus-circle" class="w-4 h-4"></i>
-              <span class="hidden sm:inline">New Post</span>
+              <span data-i18n="newPost" class="hidden sm:inline">New Post</span>
             </button>
           </div>
         </div>
 
         <!-- Mobile Navigation Subbar -->
         <div class="flex md:hidden overflow-x-auto gap-2 py-3 border-t border-slate-200 dark:border-slate-800/60 no-scrollbar">
-          <button data-view="all" class="nav-tab active text-xs whitespace-nowrap px-3 py-1.5 rounded-lg bg-indigo-600 text-white">All Posts</button>
-          <button data-view="engineering" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Engineering</button>
-          <button data-view="learning" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Learning</button>
-          <button data-view="life" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">View of Life</button>
-          <button data-view="about" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">About Me</button>
-          <button data-view="roadmap" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Roadmap</button>
-          <button data-view="stats" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Stats</button>
+          <button data-view="all" class="nav-tab active text-xs whitespace-nowrap px-3 py-1.5 rounded-lg bg-indigo-600 text-white" data-i18n="navAll">All Posts</button>
+          <button data-view="engineering" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navEngineering">Engineering</button>
+          <button data-view="learning" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navLearning">Learning</button>
+          <button data-view="life" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navLife">View of Life</button>
+          <button data-view="about" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navAbout">About Me</button>
+          <button data-view="roadmap" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navRoadmap">Roadmap</button>
+          <button data-view="stats" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-i18n="navStats">Stats</button>
         </div>
       </div>
     </header>
@@ -161,12 +167,12 @@
           <div class="lg:col-span-2 relative z-10">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-4">
               <span class="w-2 h-2 rounded-full bg-indigo-500 dark:bg-indigo-400 animate-ping"></span>
-              Chunking view • Personal Learning Journal
+              <span data-i18n="heroBadge">Chunking view • Personal Learning Journal</span>
             </div>
             <h1 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4 leading-tight">
-              Chunking Knowledge: <span class="bg-gradient-to-r from-indigo-600 via-sky-600 to-pink-600 dark:from-indigo-400 dark:via-sky-400 dark:to-pink-400 bg-clip-text text-transparent">Code</span>, <span class="bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">Mindset</span> & <span class="bg-gradient-to-r from-pink-600 to-rose-500 dark:from-pink-400 dark:to-rose-300 bg-clip-text text-transparent">Life</span>.
+              <span data-i18n="heroTitlePrefix">Chunking Knowledge:</span> <span data-i18n="heroTitleCode" class="bg-gradient-to-r from-indigo-600 via-sky-600 to-pink-600 dark:from-indigo-400 dark:via-sky-400 dark:to-pink-400 bg-clip-text text-transparent">Code</span>, <span data-i18n="heroTitleMindset" class="bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">Mindset</span> & <span data-i18n="heroTitleLife" class="bg-gradient-to-r from-pink-600 to-rose-500 dark:from-pink-400 dark:to-rose-300 bg-clip-text text-transparent">Life</span>.
             </h1>
-            <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg mb-6 leading-relaxed">
+            <p data-i18n="heroDescription" class="text-slate-600 dark:text-slate-300 text-base sm:text-lg mb-6 leading-relaxed">
               Welcome to my digital blog. Deconstructing complex systems into digestible mental chunks, documenting software architecture, and recording my personal growth journey.
             </p>
 
@@ -182,10 +188,10 @@
               
               <div class="flex items-center gap-2">
                 <select id="sortSelect" class="py-3 px-4 bg-white dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-700 dark:text-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm">
-                  <option value="newest">Latest First</option>
-                  <option value="oldest">Oldest First</option>
-                  <option value="readTime">Read Time</option>
-                  <option value="title">Title (A-Z)</option>
+                  <option value="newest" data-i18n="sortNewest">Latest First</option>
+                  <option value="oldest" data-i18n="sortOldest">Oldest First</option>
+                  <option value="readTime" data-i18n="sortReadTime">Read Time</option>
+                  <option value="title" data-i18n="sortTitle">Title (A-Z)</option>
                 </select>
 
                 <button id="exportAllBtn" title="Export / Backup All Posts (JSON)" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm">
@@ -227,7 +233,7 @@
             </div>
 
             <button id="heroViewAboutTabBtn" class="w-full py-2 bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-1">
-              Read Full Bio <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              <span data-i18n="heroReadBio">Read Full Bio</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
             </button>
           </div>
 
@@ -240,18 +246,18 @@
         <!-- Active Tag / Search Banner Indicator -->
         <div id="activeFilterBar" class="hidden mb-6 flex items-center justify-between bg-white dark:bg-slate-900/80 border border-indigo-500/30 rounded-2xl px-5 py-3 text-sm shadow-sm">
           <div class="flex items-center gap-2">
-            <span class="text-slate-500 dark:text-slate-400">Filtering by:</span>
+            <span data-i18n="filteringBy" class="text-slate-500 dark:text-slate-400">Filtering by:</span>
             <span id="activeFilterTag" class="px-3 py-1 bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30 rounded-full text-xs font-semibold"></span>
           </div>
           <button id="resetFilterBtn" class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-1">
-            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Clear Filter
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> <span data-i18n="clearFilter">Clear Filter</span>
           </button>
         </div>
 
         <!-- Category Tabs Sub-header -->
         <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div class="flex items-center gap-2">
-            <h2 id="sectionTitle" class="font-display text-2xl font-bold text-slate-900 dark:text-white">Latest Articles</h2>
+            <h2 id="sectionTitle" data-i18n="latestArticles" class="font-display text-2xl font-bold text-slate-900 dark:text-white">Latest Articles</h2>
             <span id="postCountBadge" class="px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 text-xs font-semibold">0</span>
           </div>
 
@@ -271,10 +277,10 @@
           <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-500 shadow-sm">
             <i data-lucide="file-question" class="w-8 h-8"></i>
           </div>
-          <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">No articles found</h3>
-          <p class="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">No matching posts found. Try adjusting your search query or tags, or write a new post to get started!</p>
+          <h3 data-i18n="noArticlesTitle" class="text-lg font-bold text-slate-900 dark:text-white mb-2">No articles found</h3>
+          <p data-i18n="noArticlesDesc" class="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">No matching posts found. Try adjusting your search query or tags, or write a new post to get started!</p>
           <button id="emptyStateCreateBtn" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-medium transition inline-flex items-center gap-2">
-            <i data-lucide="plus" class="w-4 h-4"></i> Create First Post
+            <i data-lucide="plus" class="w-4 h-4"></i> <span data-i18n="createFirstPost">Create First Post</span>
           </button>
         </div>
       </section>
@@ -283,7 +289,7 @@
       <section id="articleDetailSection" class="hidden">
         <div class="mb-6 flex items-center justify-between">
           <button id="backToGridBtn" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-xl text-sm font-medium transition shadow-sm">
-            <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Articles
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> <span data-i18n="backToArticles">Back to Articles</span>
           </button>
           
           <div class="flex items-center gap-2">
@@ -340,7 +346,7 @@
               <!-- Connected / Related Notes Section -->
               <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
                 <h4 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
-                  <i data-lucide="network" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> Connected & Related Notes
+                  <i data-lucide="network" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> <span data-i18n="connectedNotes">Connected & Related Notes</span>
                 </h4>
                 <div id="relatedNotesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <!-- Dynamic related posts injected here -->
@@ -350,7 +356,7 @@
               <!-- GISCUS COMMENTS CONTAINER -->
               <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
                 <h4 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-6 flex items-center gap-2">
-                  <i data-lucide="message-square" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> Community Discussion & Feedback
+                  <i data-lucide="message-square" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> <span data-i18n="communityComments">Community Discussion & Feedback</span>
                 </h4>
                 <div id="giscusContainer">
                   <!-- Dynamic Giscus comments iframe injected here -->
@@ -368,7 +374,7 @@
             <div class="hidden lg:block lg:col-span-1 border-l border-slate-200 dark:border-slate-800/80 pl-6">
               <div class="sticky top-28">
                 <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
-                  <i data-lucide="list" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> Table of Contents
+                  <i data-lucide="list" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> <span data-i18n="tableOfContents">Table of Contents</span>
                 </h4>
                 <nav id="tableOfContents" class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
                   <!-- Dynamic TOC links -->
@@ -394,11 +400,11 @@
               <div class="flex-grow text-center sm:text-left space-y-2">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <h2 id="aboutPageName" class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Software Engineer</h2>
-                    <p id="aboutPageRole" class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Full-Stack & Systems Architecture</p>
+                    <h2 id="aboutPageName" data-i18n="aboutHeaderTitle" class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Software Engineer</h2>
+                    <p id="aboutPageRole" data-i18n="aboutHeaderRole" class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Full-Stack & Systems Architecture</p>
                   </div>
                   <button id="openProfileModalBtn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md">
-                    <i data-lucide="user-cog" class="w-4 h-4"></i> Edit Intro & Profile
+                    <i data-lucide="user-cog" class="w-4 h-4"></i> <span data-i18n="editProfileBtn">Edit Intro & Profile</span>
                   </button>
                 </div>
 
@@ -477,7 +483,7 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
               <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span class="text-xs font-medium">Total Articles</span>
+                <span data-i18n="statArticles" class="text-xs font-medium">Total Articles</span>
                 <i data-lucide="file-text" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
               </div>
               <div id="statTotalPosts" class="text-3xl font-extrabold text-slate-900 dark:text-white">0</div>
@@ -485,7 +491,7 @@
 
             <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
               <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span class="text-xs font-medium">Total Words</span>
+                <span data-i18n="statWords" class="text-xs font-medium">Total Words</span>
                 <i data-lucide="type" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
               </div>
               <div id="statTotalWords" class="text-3xl font-extrabold text-slate-900 dark:text-white">0</div>
@@ -493,7 +499,7 @@
 
             <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
               <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span class="text-xs font-medium">Est. Total Reading Time</span>
+                <span data-i18n="statReadTime" class="text-xs font-medium">Est. Total Reading Time</span>
                 <i data-lucide="clock" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
               </div>
               <div id="statTotalReadTime" class="text-3xl font-extrabold text-slate-900 dark:text-white">0 min</div>
@@ -501,7 +507,7 @@
 
             <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
               <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span class="text-xs font-medium">Categories Covered</span>
+                <span data-i18n="statCategories" class="text-xs font-medium">Categories Covered</span>
                 <i data-lucide="layers" class="w-4 h-4 text-pink-600 dark:text-pink-400"></i>
               </div>
               <div id="statCategoriesCount" class="text-3xl font-extrabold text-slate-900 dark:text-white">3</div>
@@ -512,7 +518,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
               <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                <i data-lucide="pie-chart" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> Post Breakdown by Stream
+                <i data-lucide="pie-chart" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> <span data-i18n="statBreakdown">Post Breakdown by Stream</span>
               </h3>
               <div id="categoryBreakdownList" class="space-y-4">
                 <!-- Breakdown items -->
@@ -521,7 +527,7 @@
 
             <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
               <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                <i data-lucide="tag" class="w-4 h-4 text-pink-600 dark:text-pink-400"></i> Top Topics & Technologies
+                <i data-lucide="tag" class="w-4 h-4 text-pink-600 dark:text-pink-400"></i> <span data-i18n="statTopTopics">Top Topics & Technologies</span>
               </h3>
               <div id="topTagsList" class="flex flex-wrap gap-2">
                 <!-- Tag pills -->
@@ -541,13 +547,13 @@
         <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
           <div class="flex items-center gap-2">
             <i data-lucide="pen-tool" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
-            <h3 id="editorModalTitle" class="font-display font-bold text-lg text-slate-900 dark:text-white">Post Studio — Write New Entry</h3>
+            <h3 id="editorModalTitle" data-i18n="editorTitleNew" class="font-display font-bold text-lg text-slate-900 dark:text-white">Post Studio — Write New Entry</h3>
           </div>
           
           <div class="flex items-center gap-2">
             <!-- Preset Templates Dropdown -->
             <select id="templateSelect" class="py-1.5 px-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none">
-              <option value="">Load Template...</option>
+              <option value="" data-i18n="loadTemplate">Load Template...</option>
               <option value="debug">🐛 Bug Log & Debug Fix</option>
               <option value="engineering">💻 Engineering Architecture Note</option>
               <option value="learning">📚 Book / Skill Summary</option>
@@ -567,15 +573,15 @@
           <!-- Row 1: Title & Category -->
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div class="sm:col-span-2">
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Article Title *</label>
+              <label data-i18n="labelTitle" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Article Title *</label>
               <input type="text" id="inputTitle" required placeholder="e.g. Mastered Event-Driven Architecture & Async Processing" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
             </div>
             <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Stream / Category *</label>
+              <label data-i18n="labelStream" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Stream / Category *</label>
               <select id="inputCategory" required class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-                <option value="Engineering Path">💻 Engineering Path</option>
-                <option value="Personal Learning">📚 Personal Learning</option>
-                <option value="View of Life">💡 View of Life</option>
+                <option value="Engineering Path" data-i18n="catEngineering">💻 Engineering Path</option>
+                <option value="Personal Learning" data-i18n="catLearning">📚 Personal Learning</option>
+                <option value="View of Life" data-i18n="catLife">💡 View of Life</option>
               </select>
             </div>
           </div>
@@ -583,22 +589,22 @@
           <!-- Row 2: Subtitle / Summary & Tags -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Short Excerpt / Summary</label>
+              <label data-i18n="labelExcerpt" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Short Excerpt / Summary</label>
               <input type="text" id="inputExcerpt" placeholder="Brief 1-2 sentence overview for post cards..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
             </div>
             <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Tags (Comma-separated)</label>
+              <label data-i18n="labelTags" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Tags (Comma-separated)</label>
               <input type="text" id="inputTags" placeholder="e.g. Architecture, React, SystemDesign, Mindset" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
             </div>
           </div>
 
           <!-- Row 3: Cover Image URL or Preset Gradient -->
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Cover Banner Image (URL or Unsplash Preset)</label>
+            <label data-i18n="labelCover" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Cover Banner Image (URL or Unsplash Preset)</label>
             <div class="flex items-center gap-2">
               <input type="url" id="inputCover" placeholder="https://images.unsplash.com/photo-..." class="flex-grow px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
               <button type="button" id="randomCoverBtn" class="px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition whitespace-nowrap flex items-center gap-1.5">
-                <i data-lucide="image" class="w-3.5 h-3.5"></i> Preset Image
+                <i data-lucide="image" class="w-3.5 h-3.5"></i> <span data-i18n="presetImageBtn">Preset Image</span>
               </button>
             </div>
           </div>
@@ -607,7 +613,7 @@
           <div>
             <div class="flex items-center justify-between mb-2">
               <div class="flex items-center gap-2">
-                <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Content (Markdown + [[Wikilinks]] Supported)</label>
+                <label data-i18n="labelContent" class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Content (Markdown + [[Wikilinks]] Supported)</label>
               </div>
               
               <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
@@ -639,15 +645,15 @@ const learn = () => 'Continuous Improvement';
         <!-- Modal Footer -->
         <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex items-center justify-between">
           <button type="button" id="downloadMdBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition flex items-center gap-1.5">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> Export .md File
+            <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="btnExportMd">Export .md File</span>
           </button>
           
           <div class="flex items-center gap-3">
-            <button type="button" id="cancelEditorBtn" class="px-5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium transition">
+            <button type="button" id="cancelEditorBtn" class="px-5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium transition" data-i18n="btnCancel">
               Cancel
             </button>
             <button type="button" id="savePostBtn" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
-              <i data-lucide="send" class="w-4 h-4"></i> Publish Post
+              <i data-lucide="send" class="w-4 h-4"></i> <span data-i18n="btnPublish">Publish Post</span>
             </button>
           </div>
         </div>
@@ -722,8 +728,8 @@ const learn = () => 'Continuous Improvement';
     <!-- Footer -->
     <footer class="mt-auto border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-slate-950 py-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 space-y-2">
-        <p>Chunking view — Built for Personal Growth, Digital Gardening & Life Philosophy.</p>
-        <p>All posts stored locally in browser storage with instant Markdown export capability.</p>
+        <p data-i18n="footerText">Chunking view — Built for Personal Growth, Digital Gardening & Life Philosophy.</p>
+        <p data-i18n="footerNote">All posts stored locally in browser storage with instant Markdown export capability.</p>
       </div>
     </footer>
 
@@ -732,6 +738,7 @@ const learn = () => 'Continuous Improvement';
   <!-- JavaScript Modules -->
   <script src="js/data.js"></script>
   <script src="js/storage.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/markdown.js"></script>
   <script src="js/app.js"></script>
 </body>
