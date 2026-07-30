@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chunking view — Personal Learning & Engineering Path</title>
+  <meta name="description" content="Chunking view — A personal digital garden and blog tracking my software engineering path, personal learning process, and view of life.">
+  
+  <!-- Google Fonts: Inter & Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Outfit', 'sans-serif'],
+            mono: ['Fira Code', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              400: '#818cf8',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+              900: '#312e81',
+            },
+            engineering: '#3b82f6',
+            learning: '#10b981',
+            life: '#ec4899'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Marked Markdown Parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Highlight.js for Code Highlighting -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+
+  <!-- Canvas Confetti for Celebration on Publish -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen font-sans antialiased transition-colors duration-300 selection:bg-indigo-500 selection:text-white">
+
+  <!-- Background Animated Mesh Grid -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-600/20 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/3 -right-40 w-96 h-96 bg-blue-500/10 dark:bg-blue-600/15 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    <div class="absolute -bottom-40 left-1/3 w-96 h-96 bg-pink-500/10 dark:bg-pink-600/15 rounded-full blur-3xl animate-pulse" style="animation-delay: 4s;"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#94a3b8_1px,transparent_1px)] dark:bg-[radial-gradient(#334155_1px,transparent_1px)] [background-size:24px_24px] opacity-25"></div>
+  </div>
+
+  <div class="relative z-10 flex flex-col min-h-screen">
+    
+    <!-- Top Navigation Header -->
+    <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/80 dark:bg-slate-950/80 border-b border-slate-200 dark:border-slate-800/80 transition-colors">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16 sm:h-20">
+          
+          <!-- Logo & Brand -->
+          <div class="flex items-center gap-3 cursor-pointer" id="navBrand">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-blue-500 to-pink-500 p-0.5 shadow-lg shadow-indigo-500/20">
+              <div class="w-full h-full bg-white dark:bg-slate-950 rounded-[10px] flex items-center justify-center">
+                <i data-lucide="layers" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+              </div>
+            </div>
+            <div>
+              <span class="font-display text-xl font-bold bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-700 dark:from-white dark:via-slate-200 dark:to-indigo-300 bg-clip-text text-transparent">
+                Chunking view
+              </span>
+              <span class="hidden sm:block text-xs text-slate-500 dark:text-slate-400 font-medium">Personal Learning • Tech • Life</span>
+            </div>
+          </div>
+
+          <!-- Main Nav Navigation Links -->
+          <nav class="hidden md:flex items-center gap-1 bg-slate-100 dark:bg-slate-900/60 p-1.5 rounded-full border border-slate-200 dark:border-slate-800/80">
+            <button data-view="all" class="nav-tab active px-4 py-2 text-sm font-medium rounded-full transition-all">
+              <i data-lucide="layout-grid" class="w-4 h-4 inline mr-1.5"></i>All Posts
+            </button>
+            <button data-view="engineering" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+              <i data-lucide="code-2" class="w-4 h-4 inline mr-1.5 text-blue-500"></i>Engineering Path
+            </button>
+            <button data-view="learning" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+              <i data-lucide="book-open" class="w-4 h-4 inline mr-1.5 text-emerald-500"></i>Personal Learning
+            </button>
+            <button data-view="life" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+              <i data-lucide="heart" class="w-4 h-4 inline mr-1.5 text-pink-500"></i>View of Life
+            </button>
+            <button data-view="about" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+              <i data-lucide="user" class="w-4 h-4 inline mr-1.5 text-cyan-500"></i>About Me
+            </button>
+            <button data-view="roadmap" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+              <i data-lucide="milestone" class="w-4 h-4 inline mr-1.5 text-amber-500"></i>Roadmap
+            </button>
+            <button data-view="stats" class="nav-tab px-4 py-2 text-sm font-medium rounded-full transition-all text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">
+              <i data-lucide="bar-chart-3" class="w-4 h-4 inline mr-1.5 text-purple-500"></i>Stats
+            </button>
+          </nav>
+
+          <!-- Right Action Controls -->
+          <div class="flex items-center gap-3">
+            <!-- Theme Toggle -->
+            <button id="themeToggleBtn" title="Toggle Theme" class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm">
+              <i data-lucide="sun" class="w-4 h-4 hidden dark:block text-amber-400"></i>
+              <i data-lucide="moon" class="w-4 h-4 block dark:hidden text-indigo-600"></i>
+            </button>
+
+            <!-- Bookmarks Quick Filter -->
+            <button id="bookmarksBtn" title="Saved Posts" class="p-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-amber-500 dark:hover:text-amber-400 hover:border-slate-300 dark:hover:border-slate-700 transition relative shadow-sm">
+              <i data-lucide="bookmark" class="w-4 h-4"></i>
+              <span id="bookmarkBadge" class="hidden absolute -top-1 -right-1 w-4 h-4 bg-amber-500 text-slate-950 font-bold text-[10px] rounded-full flex items-center justify-center">0</span>
+            </button>
+
+            <!-- + New Post Button (Primary Action) -->
+            <button id="openEditorBtn" class="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-700 hover:from-indigo-500 hover:to-blue-600 text-white font-medium shadow-lg shadow-indigo-600/25 hover:shadow-indigo-600/40 transition active:scale-95">
+              <i data-lucide="plus-circle" class="w-4 h-4"></i>
+              <span class="hidden sm:inline">New Post</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Navigation Subbar -->
+        <div class="flex md:hidden overflow-x-auto gap-2 py-3 border-t border-slate-200 dark:border-slate-800/60 no-scrollbar">
+          <button data-view="all" class="nav-tab active text-xs whitespace-nowrap px-3 py-1.5 rounded-lg bg-indigo-600 text-white">All Posts</button>
+          <button data-view="engineering" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Engineering</button>
+          <button data-view="learning" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Learning</button>
+          <button data-view="life" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">View of Life</button>
+          <button data-view="about" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">About Me</button>
+          <button data-view="roadmap" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Roadmap</button>
+          <button data-view="stats" class="nav-tab text-xs whitespace-nowrap px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Stats</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      
+      <!-- HERO BANNER (Shown on Main Feed View) -->
+      <section id="heroSection" class="mb-10 relative overflow-hidden rounded-3xl bg-gradient-to-r from-white via-indigo-50/60 to-slate-100 dark:from-slate-900 dark:via-indigo-950/40 dark:to-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 sm:p-10 shadow-xl dark:shadow-2xl">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+          
+          <!-- Hero Main Copy -->
+          <div class="lg:col-span-2 relative z-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-4">
+              <span class="w-2 h-2 rounded-full bg-indigo-500 dark:bg-indigo-400 animate-ping"></span>
+              Chunking view • Personal Learning Journal
+            </div>
+            <h1 class="font-display text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4 leading-tight">
+              Chunking Knowledge: <span class="bg-gradient-to-r from-indigo-600 via-sky-600 to-pink-600 dark:from-indigo-400 dark:via-sky-400 dark:to-pink-400 bg-clip-text text-transparent">Code</span>, <span class="bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">Mindset</span> & <span class="bg-gradient-to-r from-pink-600 to-rose-500 dark:from-pink-400 dark:to-rose-300 bg-clip-text text-transparent">Life</span>.
+            </h1>
+            <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg mb-6 leading-relaxed">
+              Welcome to my digital blog. Deconstructing complex systems into digestible mental chunks, documenting software architecture, and recording my personal growth journey.
+            </p>
+
+            <!-- Quick Search & Filter Controls Bar -->
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <div class="relative flex-grow">
+                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
+                <input type="text" id="searchInput" placeholder="Search posts, code snippets, tags or concepts..." class="w-full pl-10 pr-10 py-3 bg-white dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-sm shadow-sm">
+                <button id="clearSearchBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                  <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+              </div>
+              
+              <div class="flex items-center gap-2">
+                <select id="sortSelect" class="py-3 px-4 bg-white dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-700 dark:text-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm">
+                  <option value="newest">Latest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="readTime">Read Time</option>
+                  <option value="title">Title (A-Z)</option>
+                </select>
+
+                <button id="exportAllBtn" title="Export / Backup All Posts (JSON)" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm">
+                  <i data-lucide="download" class="w-4 h-4"></i>
+                </button>
+                <label for="importFile" title="Import Posts (JSON)" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm cursor-pointer">
+                  <i data-lucide="upload" class="w-4 h-4"></i>
+                  <input type="file" id="importFile" accept=".json" class="hidden">
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero About Me Quick Profile Box -->
+          <div class="lg:col-span-1 bg-white/80 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-lg relative">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-500 to-pink-500 p-0.5 shadow-md">
+                  <img id="heroAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Avatar" class="w-full h-full rounded-full object-cover">
+                </div>
+                <div>
+                  <h3 id="heroProfileName" class="font-display font-bold text-base text-slate-900 dark:text-white">Software Engineer</h3>
+                  <p id="heroProfileRole" class="text-xs text-indigo-600 dark:text-indigo-400 font-medium">Full-Stack & Systems</p>
+                </div>
+              </div>
+              <button id="heroEditProfileBtn" title="Edit About Myself" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
+                <i data-lucide="user-cog" class="w-4 h-4"></i>
+              </button>
+            </div>
+            
+            <p id="heroProfileBio" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4 line-clamp-3">
+              Documenting my software engineering path, mental models, and personal life reflections. Learning in public every single day.
+            </p>
+
+            <div id="heroProfileSkills" class="flex flex-wrap gap-1 mb-4">
+              <span class="px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 text-[10px] font-semibold">System Architecture</span>
+              <span class="px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 text-[10px] font-semibold">Mental Models</span>
+              <span class="px-2 py-0.5 rounded-md bg-pink-50 dark:bg-pink-950/80 text-pink-700 dark:text-pink-300 text-[10px] font-semibold">Life Philosophy</span>
+            </div>
+
+            <button id="heroViewAboutTabBtn" class="w-full py-2 bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-1">
+              Read Full Bio <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VIEW 1: BLOG POSTS GRID & LIST -->
+      <section id="postsViewSection">
+        
+        <!-- Active Tag / Search Banner Indicator -->
+        <div id="activeFilterBar" class="hidden mb-6 flex items-center justify-between bg-white dark:bg-slate-900/80 border border-indigo-500/30 rounded-2xl px-5 py-3 text-sm shadow-sm">
+          <div class="flex items-center gap-2">
+            <span class="text-slate-500 dark:text-slate-400">Filtering by:</span>
+            <span id="activeFilterTag" class="px-3 py-1 bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-300 border border-indigo-500/30 rounded-full text-xs font-semibold"></span>
+          </div>
+          <button id="resetFilterBtn" class="text-xs text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-1">
+            <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Clear Filter
+          </button>
+        </div>
+
+        <!-- Category Tabs Sub-header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+          <div class="flex items-center gap-2">
+            <h2 id="sectionTitle" class="font-display text-2xl font-bold text-slate-900 dark:text-white">Latest Articles</h2>
+            <span id="postCountBadge" class="px-2.5 py-0.5 rounded-full bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-400 text-xs font-semibold">0</span>
+          </div>
+
+          <!-- Tags Quick Cloud -->
+          <div id="tagsCloud" class="flex flex-wrap gap-1.5 max-w-xl">
+            <!-- Dynamic tags injected here -->
+          </div>
+        </div>
+
+        <!-- POSTS GRID -->
+        <div id="postsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Post cards will be dynamically rendered here -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden py-16 text-center">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-500 shadow-sm">
+            <i data-lucide="file-question" class="w-8 h-8"></i>
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">No articles found</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm max-w-md mx-auto mb-6">No matching posts found. Try adjusting your search query or tags, or write a new post to get started!</p>
+          <button id="emptyStateCreateBtn" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-sm font-medium transition inline-flex items-center gap-2">
+            <i data-lucide="plus" class="w-4 h-4"></i> Create First Post
+          </button>
+        </div>
+      </section>
+
+      <!-- VIEW 2: ARTICLE READING DETAIL VIEW -->
+      <section id="articleDetailSection" class="hidden">
+        <div class="mb-6 flex items-center justify-between">
+          <button id="backToGridBtn" class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-xl text-sm font-medium transition shadow-sm">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Articles
+          </button>
+          
+          <div class="flex items-center gap-2">
+            <button id="detailBookmarkBtn" class="p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-amber-500 rounded-xl transition shadow-sm">
+              <i data-lucide="bookmark" class="w-4 h-4"></i>
+            </button>
+            <button id="detailExportMdBtn" title="Export as Markdown (.md)" class="p-2.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 rounded-xl transition shadow-sm">
+              <i data-lucide="file-down" class="w-4 h-4"></i>
+            </button>
+            <button id="detailEditBtn" class="px-3.5 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-indigo-600 dark:text-indigo-400 rounded-xl text-sm font-medium transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="edit-3" class="w-4 h-4"></i> Edit
+            </button>
+            <button id="detailDeleteBtn" class="px-3.5 py-2 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-900/50 hover:bg-red-100 dark:hover:bg-red-900/50 text-red-600 dark:text-red-400 rounded-xl text-sm font-medium transition flex items-center gap-1.5 shadow-sm">
+              <i data-lucide="trash-2" class="w-4 h-4"></i> Delete
+            </button>
+          </div>
+        </div>
+
+        <!-- Article Content Container -->
+        <article class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-3xl overflow-hidden shadow-xl dark:shadow-2xl">
+          <!-- Article Cover Banner -->
+          <div id="articleCoverContainer" class="h-64 sm:h-80 w-full relative overflow-hidden bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900">
+            <img id="articleCoverImg" class="w-full h-full object-cover opacity-85" src="" alt="Article Banner">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+            
+            <div class="absolute bottom-6 left-6 right-6">
+              <div class="flex items-center gap-2 mb-3">
+                <div id="articleCategoryBadge" class="px-3 py-1 rounded-full text-xs font-semibold"></div>
+              </div>
+              <h1 id="articleTitle" class="font-display text-2xl sm:text-4xl font-extrabold text-white leading-tight mb-3"></h1>
+              
+              <div class="flex flex-wrap items-center gap-4 text-xs text-slate-300 font-medium">
+                <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-3.5 h-3.5"></i> <span id="articleDate"></span></span>
+                <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3.5 h-3.5"></i> <span id="articleReadTime"></span></span>
+                <span class="flex items-center gap-1"><i data-lucide="user" class="w-3.5 h-3.5"></i> Author: Me</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reading Progress Bar -->
+          <div class="w-full bg-slate-200 dark:bg-slate-800 h-1">
+            <div id="readingProgressBar" class="bg-gradient-to-r from-indigo-500 to-pink-500 h-1 w-0 transition-all duration-150"></div>
+          </div>
+
+          <!-- Main Article Grid (Content + Table of Contents Sidebar) -->
+          <div class="p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-4 gap-10">
+            
+            <!-- Rendered Markdown Body -->
+            <div class="lg:col-span-3">
+              <div id="articleMarkdownBody" class="prose dark:prose-invert max-w-none prose-headings:font-display prose-headings:font-bold prose-a:text-indigo-600 dark:prose-a:text-indigo-400 prose-code:text-indigo-600 dark:prose-code:text-indigo-300 prose-pre:bg-slate-900 prose-pre:text-slate-100 prose-pre:border prose-pre:border-slate-800">
+                <!-- HTML rendered from Markdown -->
+              </div>
+
+              <!-- Connected / Related Notes Section -->
+              <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800">
+                <h4 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
+                  <i data-lucide="network" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> Connected & Related Notes
+                </h4>
+                <div id="relatedNotesGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <!-- Dynamic related posts injected here -->
+                </div>
+              </div>
+
+              <!-- Tags Footer -->
+              <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800/60 flex flex-wrap items-center gap-2">
+                <span class="text-xs text-slate-500 dark:text-slate-400 font-medium mr-2">Tags:</span>
+                <div id="articleTagsList" class="flex flex-wrap gap-2"></div>
+              </div>
+            </div>
+
+            <!-- Table of Contents Sidebar -->
+            <div class="hidden lg:block lg:col-span-1 border-l border-slate-200 dark:border-slate-800/80 pl-6">
+              <div class="sticky top-28">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
+                  <i data-lucide="list" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> Table of Contents
+                </h4>
+                <nav id="tableOfContents" class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                  <!-- Dynamic TOC links -->
+                </nav>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <!-- VIEW 3: ABOUT MYSELF PAGE -->
+      <section id="aboutSection" class="hidden">
+        <div class="max-w-4xl mx-auto space-y-8">
+          
+          <!-- About Header Profile Card -->
+          <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800/80 rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
+            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 relative z-10">
+              
+              <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-tr from-indigo-500 via-blue-500 to-pink-500 p-1 shadow-xl flex-shrink-0">
+                <img id="aboutPageAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Avatar" class="w-full h-full rounded-[22px] object-cover">
+              </div>
+
+              <div class="flex-grow text-center sm:text-left space-y-2">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div>
+                    <h2 id="aboutPageName" class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Software Engineer</h2>
+                    <p id="aboutPageRole" class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Full-Stack & Systems Architecture</p>
+                  </div>
+                  <button id="openProfileModalBtn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md">
+                    <i data-lucide="user-cog" class="w-4 h-4"></i> Edit Intro & Profile
+                  </button>
+                </div>
+
+                <p id="aboutPageBio" class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed pt-2">
+                  Welcome to Chunking view! I am a passionate software engineer focused on building robust backends, learning complex systems through first-principles chunking, and writing about my engineering path and personal life philosophy.
+                </p>
+
+                <!-- Location & Socials -->
+                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs text-slate-500 dark:text-slate-400 pt-3">
+                  <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-pink-500"></i> <span id="aboutPageLocation">Remote / Global</span></span>
+                  <a id="aboutPageGithub" href="#" target="_blank" class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition"><i data-lucide="github" class="w-3.5 h-3.5"></i> GitHub</a>
+                  <a id="aboutPageLinkedin" href="#" target="_blank" class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition"><i data-lucide="linkedin" class="w-3.5 h-3.5"></i> LinkedIn</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Skills & Focus Areas -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4">
+                <i data-lucide="code-2" class="w-5 h-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Engineering Focus</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">System architecture, event-driven backends, database optimization, and scalable APIs.</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4">
+                <i data-lucide="brain" class="w-5 h-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Learning Method</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Deconstructing topics into first principles, continuous reading, and public documentation.</p>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+              <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center mb-4">
+                <i data-lucide="heart" class="w-5 h-5"></i>
+              </div>
+              <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Life View</h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Craftsmanship over quick hype, empathy in communication, and curious exploration.</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VIEW 4: ENGINEERING ROADMAP & TIMELINE -->
+      <section id="roadmapSection" class="hidden">
+        <div class="max-w-4xl mx-auto">
+          <div class="text-center mb-12">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-semibold mb-3">
+              <i data-lucide="compass" class="w-3.5 h-3.5"></i> Career & Learning Evolution
+            </div>
+            <h2 class="font-display text-3xl font-extrabold text-slate-900 dark:text-white">Engineering & Growth Roadmap</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm mt-2 max-w-lg mx-auto">Visual timeline mapping key technical milestones, architectural breakthroughs, and life lessons.</p>
+          </div>
+
+          <!-- Timeline Container -->
+          <div id="roadmapTimeline" class="relative border-l-2 border-slate-200 dark:border-slate-800 ml-4 sm:ml-32 space-y-12">
+            <!-- Timeline items rendered dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- VIEW 5: STATS & ANALYTICS DASHBOARD -->
+      <section id="statsSection" class="hidden">
+        <div class="max-w-5xl mx-auto space-y-8">
+          <div class="text-center mb-8">
+            <h2 class="font-display text-3xl font-extrabold text-slate-900 dark:text-white">Learning Metrics & Analytics</h2>
+            <p class="text-slate-600 dark:text-slate-400 text-sm mt-2">Quantitative overview of my digital garden activity and topics written.</p>
+          </div>
+
+          <!-- Metric Cards Grid -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
+                <span class="text-xs font-medium">Total Articles</span>
+                <i data-lucide="file-text" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
+              </div>
+              <div id="statTotalPosts" class="text-3xl font-extrabold text-slate-900 dark:text-white">0</div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
+                <span class="text-xs font-medium">Total Words</span>
+                <i data-lucide="type" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
+              </div>
+              <div id="statTotalWords" class="text-3xl font-extrabold text-slate-900 dark:text-white">0</div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
+                <span class="text-xs font-medium">Est. Total Reading Time</span>
+                <i data-lucide="clock" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
+              </div>
+              <div id="statTotalReadTime" class="text-3xl font-extrabold text-slate-900 dark:text-white">0 min</div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
+              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
+                <span class="text-xs font-medium">Categories Covered</span>
+                <i data-lucide="layers" class="w-4 h-4 text-pink-600 dark:text-pink-400"></i>
+              </div>
+              <div id="statCategoriesCount" class="text-3xl font-extrabold text-slate-900 dark:text-white">3</div>
+            </div>
+          </div>
+
+          <!-- Distribution & Activity -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <i data-lucide="pie-chart" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> Post Breakdown by Stream
+              </h3>
+              <div id="categoryBreakdownList" class="space-y-4">
+                <!-- Breakdown items -->
+              </div>
+            </div>
+
+            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
+              <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <i data-lucide="tag" class="w-4 h-4 text-pink-600 dark:text-pink-400"></i> Top Topics & Technologies
+              </h3>
+              <div id="topTagsList" class="flex flex-wrap gap-2">
+                <!-- Tag pills -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- POST CREATOR & EDITOR STUDIO MODAL -->
+    <div id="editorModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/40 dark:bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-5xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+        
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
+          <div class="flex items-center gap-2">
+            <i data-lucide="pen-tool" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+            <h3 id="editorModalTitle" class="font-display font-bold text-lg text-slate-900 dark:text-white">Post Studio — Write New Entry</h3>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <!-- Preset Templates Dropdown -->
+            <select id="templateSelect" class="py-1.5 px-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none">
+              <option value="">Load Template...</option>
+              <option value="debug">🐛 Bug Log & Debug Fix</option>
+              <option value="engineering">💻 Engineering Architecture Note</option>
+              <option value="learning">📚 Book / Skill Summary</option>
+              <option value="life">💡 Life Reflection Essay</option>
+            </select>
+
+            <button id="closeEditorBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+              <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Modal Body -->
+        <form id="postForm" class="p-6 overflow-y-auto flex-grow space-y-6">
+          <input type="hidden" id="postId" value="">
+
+          <!-- Row 1: Title & Category -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="sm:col-span-2">
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Article Title *</label>
+              <input type="text" id="inputTitle" required placeholder="e.g. Mastered Event-Driven Architecture & Async Processing" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Stream / Category *</label>
+              <select id="inputCategory" required class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                <option value="Engineering Path">💻 Engineering Path</option>
+                <option value="Personal Learning">📚 Personal Learning</option>
+                <option value="View of Life">💡 View of Life</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2: Subtitle / Summary & Tags -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Short Excerpt / Summary</label>
+              <input type="text" id="inputExcerpt" placeholder="Brief 1-2 sentence overview for post cards..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Tags (Comma-separated)</label>
+              <input type="text" id="inputTags" placeholder="e.g. Architecture, React, SystemDesign, Mindset" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+            </div>
+          </div>
+
+          <!-- Row 3: Cover Image URL or Preset Gradient -->
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Cover Banner Image (URL or Unsplash Preset)</label>
+            <div class="flex items-center gap-2">
+              <input type="url" id="inputCover" placeholder="https://images.unsplash.com/photo-..." class="flex-grow px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+              <button type="button" id="randomCoverBtn" class="px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition whitespace-nowrap flex items-center gap-1.5">
+                <i data-lucide="image" class="w-3.5 h-3.5"></i> Preset Image
+              </button>
+            </div>
+          </div>
+
+          <!-- Row 4: Markdown Editor & Live Preview -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <div class="flex items-center gap-2">
+                <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Content (Markdown + [[Wikilinks]] Supported)</label>
+              </div>
+              
+              <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
+                <button type="button" id="editorTabWrite" class="px-3 py-1 rounded-lg bg-indigo-600 text-white font-medium">Write</button>
+                <button type="button" id="editorTabPreview" class="px-3 py-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Live Preview</button>
+              </div>
+            </div>
+
+            <!-- Markdown Textarea -->
+            <div id="writePane">
+              <textarea id="inputContent" rows="12" required placeholder="# Key Concepts
+Use **markdown** formatting, `code blocks`, lists, quotes, and wikilinks like [[Building Scalable Event-Driven Architectures: Lessons Learned]]!
+
+```js
+const learn = () => 'Continuous Improvement';
+```
+" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white font-mono text-sm placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 leading-relaxed"></textarea>
+            </div>
+
+            <!-- Live Preview Pane -->
+            <div id="previewPane" class="hidden min-h-[300px] p-6 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl overflow-y-auto max-h-[400px]">
+              <div id="livePreviewOutput" class="prose dark:prose-invert max-w-none text-sm">
+                <p class="text-slate-400 italic">Start typing content to see live markdown rendering...</p>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Modal Footer -->
+        <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex items-center justify-between">
+          <button type="button" id="downloadMdBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition flex items-center gap-1.5">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i> Export .md File
+          </button>
+          
+          <div class="flex items-center gap-3">
+            <button type="button" id="cancelEditorBtn" class="px-5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium transition">
+              Cancel
+            </button>
+            <button type="button" id="savePostBtn" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i> Publish Post
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- EDIT PROFILE / INTRO MODAL -->
+    <div id="profileModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/40 dark:bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6">
+      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden flex flex-col">
+        
+        <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
+          <div class="flex items-center gap-2">
+            <i data-lucide="user-cog" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Edit Profile & Intro</h3>
+          </div>
+          <button id="closeProfileModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <form id="profileForm" class="p-6 space-y-4">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Display Name *</label>
+            <input type="text" id="profileInputName" required placeholder="Your Name or Title" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Role / Headline *</label>
+            <input type="text" id="profileInputRole" required placeholder="e.g. Software Engineer & Lifelong Learner" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">About Me Intro Bio *</label>
+            <textarea id="profileInputBio" rows="4" required placeholder="Write a short summary about yourself..." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm leading-relaxed"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Location</label>
+              <input type="text" id="profileInputLocation" placeholder="e.g. Remote / Global" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Avatar Image URL</label>
+              <input type="url" id="profileInputAvatar" placeholder="https://images.unsplash.com/photo-..." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">GitHub URL</label>
+              <input type="url" id="profileInputGithub" placeholder="https://github.com/username" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">LinkedIn URL</label>
+              <input type="url" id="profileInputLinkedin" placeholder="https://linkedin.com/in/username" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
+            <button type="button" id="cancelProfileBtn" class="px-5 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium">Cancel</button>
+            <button type="submit" id="saveProfileBtn" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow-md">Save Changes</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800/80 bg-white dark:bg-slate-950 py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-xs text-slate-500 space-y-2">
+        <p>Chunking view — Built for Personal Growth, Digital Gardening & Life Philosophy.</p>
+        <p>All posts stored locally in browser storage with instant Markdown export capability.</p>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/markdown.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
