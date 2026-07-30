@@ -1,27 +1,39 @@
-/* Custom Styles for Dev & Life Odyssey Blog */
+/* Custom Styles & Typography Overrides for Chunking view */
 
-/* Custom Scrollbars */
+/* Base Typography & Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+/* Ensure Vietnamese diacritics line-height safety */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.35 !important;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.1);
-}
-.dark ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.5);
+  background: #cbd5e1;
   border-radius: 9999px;
 }
 .dark ::-webkit-scrollbar-thumb {
-  background: rgba(51, 65, 85, 0.8);
+  background: #334155;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(99, 102, 241, 0.8);
+  background: #94a3b8;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
 }
 
+/* Hide scrollbar for clean horizontal nav */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -30,130 +42,23 @@
   scrollbar-width: none;
 }
 
-/* Light Theme Comprehensive Overrides */
-html:not(.dark) {
-  color-scheme: light;
-}
-html:not(.dark) body {
-  background-color: #f8fafc;
-  color: #0f172a;
-}
-html:not(.dark) header {
-  background-color: rgba(255, 255, 255, 0.9);
-  border-color: #e2e8f0;
-}
-html:not(.dark) #heroSection {
-  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 50%, #f1f5f9 100%);
-  border-color: #cbd5e1;
-  box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.1);
-}
-html:not(.dark) #heroSection h1 {
-  color: #0f172a;
-}
-html:not(.dark) #heroSection p {
-  color: #475569;
-}
-html:not(.dark) article, 
-html:not(.dark) .post-card,
-html:not(.dark) #editorModal > div,
-html:not(.dark) #statsSection > div > div,
-html:not(.dark) #roadmapTimeline > div > div {
-  background-color: #ffffff;
-  border-color: #e2e8f0;
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
-}
-html:not(.dark) .prose {
-  color: #334155;
-}
-html:not(.dark) .prose h1, 
-html:not(.dark) .prose h2, 
-html:not(.dark) .prose h3,
-html:not(.dark) .prose h4 {
-  color: #0f172a;
-}
-html:not(.dark) .prose code:not(pre code) {
-  background-color: #f1f5f9;
-  color: #4f46e5;
-  border: 1px solid #e2e8f0;
-}
-html:not(.dark) .prose pre {
-  background-color: #0f172a;
-  color: #f8fafc;
-}
-html:not(.dark) input,
-html:not(.dark) select,
-html:not(.dark) textarea {
-  background-color: #ffffff !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1 !important;
-}
-html:not(.dark) input::placeholder,
-html:not(.dark) textarea::placeholder {
-  color: #94a3b8 !important;
-}
-
-/* Glassmorphism Card Hover Effects */
-.post-card {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 30px -10px rgba(99, 102, 241, 0.15);
-}
-
-/* Active Nav Tab Style */
+/* Header Navigation Active Tab Styling */
 .nav-tab.active {
-  background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #4f46e5, #3b82f6);
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+  box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.35);
 }
 
-/* Growth Stage Filter Active Style */
-.stage-btn.active {
-  background-color: rgba(99, 102, 241, 0.2);
-  border-color: rgba(99, 102, 241, 0.5);
-  color: #6366f1;
-}
-.dark .stage-btn.active {
-  color: #818cf8;
-}
-
-/* Growth Stage Badges */
-.stage-seedling {
-  background-color: rgba(234, 179, 8, 0.15);
-  color: #ca8a04;
-  border: 1px solid rgba(234, 179, 8, 0.3);
-}
-.dark .stage-seedling {
-  color: #facc15;
-}
-
-.stage-budding {
-  background-color: rgba(16, 185, 129, 0.15);
-  color: #059669;
-  border: 1px solid rgba(16, 185, 129, 0.3);
-}
-.dark .stage-budding {
-  color: #34d399;
-}
-
-.stage-evergreen {
-  background-color: rgba(99, 102, 241, 0.15);
-  color: #4f46e5;
-  border: 1px solid rgba(99, 102, 241, 0.3);
-}
-.dark .stage-evergreen {
-  color: #818cf8;
-}
-
-/* Category Badge Styling */
+/* Category Badge Tokens */
 .badge-engineering {
   background-color: rgba(59, 130, 246, 0.15);
   color: #2563eb;
   border: 1px solid rgba(59, 130, 246, 0.3);
 }
 .dark .badge-engineering {
+  background-color: rgba(59, 130, 246, 0.2);
   color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.35);
 }
 
 .badge-learning {
@@ -162,7 +67,9 @@ html:not(.dark) textarea::placeholder {
   border: 1px solid rgba(16, 185, 129, 0.3);
 }
 .dark .badge-learning {
+  background-color: rgba(16, 185, 129, 0.2);
   color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
 }
 
 .badge-life {
@@ -171,64 +78,64 @@ html:not(.dark) textarea::placeholder {
   border: 1px solid rgba(236, 72, 153, 0.3);
 }
 .dark .badge-life {
+  background-color: rgba(236, 72, 153, 0.2);
   color: #f472b6;
+  border: 1px solid rgba(236, 72, 153, 0.35);
 }
 
-/* Wikilinks Styling */
-.wikilink-pill {
-  background-color: rgba(224, 231, 255, 0.8);
-  color: #4338ca;
-  border: 1px solid #c7d2fe;
+/* Post Card Animations */
+.post-card {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s ease;
 }
-.dark .wikilink-pill {
-  background-color: rgba(30, 27, 75, 0.8);
-  color: #a5b4fc;
-  border: 1px solid rgba(55, 48, 163, 0.8);
+.post-card:hover {
+  transform: translateY(-4px);
 }
 
-/* Code Block Enhancements */
-.prose pre {
+/* Copy Code Button inside Markdown Code Blocks */
+pre {
   position: relative;
-  padding: 1.25rem;
-  border-radius: 1rem;
-  font-family: 'Fira Code', monospace;
-  font-size: 0.875rem;
-  overflow-x: auto;
 }
-
 .copy-code-btn {
   position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  padding: 0.35rem 0.6rem;
-  font-size: 0.75rem;
+  top: 0.6rem;
+  right: 0.6rem;
+  padding: 0.3rem 0.6rem;
+  font-size: 0.7rem;
+  font-family: inherit;
+  font-weight: 600;
+  border-radius: 0.5rem;
   background: rgba(30, 41, 59, 0.8);
   color: #94a3b8;
-  border: 1px solid rgba(51, 65, 85, 0.8);
-  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
   cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  items-center: center;
-  gap: 0.25rem;
+  transition: all 0.15s ease;
 }
 .copy-code-btn:hover {
+  background: rgba(51, 65, 85, 0.9);
   color: #ffffff;
-  background: rgba(79, 70, 229, 0.8);
-  border-color: rgba(99, 102, 241, 0.8);
 }
 
-/* Toast Notification Animation */
-@keyframes toastIn {
+/* Toast Animations */
+@keyframes slideInUp {
   from {
-    transform: translateY(100%) scale(0.9);
+    transform: translateY(100%);
     opacity: 0;
   }
   to {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
     opacity: 1;
   }
 }
 .toast-msg {
-  animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Wikilink Hover Pill */
+.wikilink-pill {
+  text-decoration: none !important;
+}
+.wikilink-pill:hover {
+  background-color: #4f46e5 !important;
+  color: #ffffff !important;
 }
