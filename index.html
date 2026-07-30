@@ -32,10 +32,7 @@
               600: '#4f46e5',
               700: '#4338ca',
               900: '#312e81',
-            },
-            engineering: '#3b82f6',
-            learning: '#10b981',
-            life: '#ec4899'
+            }
           }
         }
       }
@@ -126,7 +123,7 @@
     <!-- Main Container -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
       
-      <!-- MINIMAL SEARCH SECTION (Replaces Hero Banner) -->
+      <!-- MINIMAL SEARCH SECTION -->
       <section id="searchSection" class="mb-10 max-w-3xl mx-auto">
         <div class="flex flex-col sm:flex-row items-center gap-3">
           <div class="relative flex-grow w-full">
@@ -170,7 +167,7 @@
           </button>
         </div>
 
-        <!-- Stream Filter Buttons Bar -->
+        <!-- Section Header Bar -->
         <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
           <div class="flex items-center gap-2">
             <h2 id="sectionTitle" data-i18n="latestArticles" class="font-display text-2xl font-bold text-slate-900 dark:text-white">Latest Articles</h2>
@@ -232,9 +229,6 @@
             <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
             
             <div class="absolute bottom-6 left-6 right-6">
-              <div class="flex items-center gap-2 mb-3">
-                <div id="articleCategoryBadge" class="px-3 py-1 rounded-full text-xs font-semibold"></div>
-              </div>
               <h1 id="articleTitle" class="font-display text-2xl sm:text-4xl font-extrabold text-white leading-tight mb-3"></h1>
               
               <div class="flex flex-wrap items-center gap-4 text-xs text-slate-300 font-medium">
@@ -301,177 +295,6 @@
         </article>
       </section>
 
-      <!-- VIEW 3: ABOUT MYSELF PAGE -->
-      <section id="aboutSection" class="hidden">
-        <div class="max-w-4xl mx-auto space-y-8">
-          
-          <!-- About Header Profile Card -->
-          <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800/80 rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
-            <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 relative z-10">
-              
-              <div class="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-tr from-indigo-500 via-blue-500 to-pink-500 p-1 shadow-xl flex-shrink-0">
-                <img id="aboutPageAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="Avatar" class="w-full h-full rounded-[22px] object-cover">
-              </div>
-
-              <div class="flex-grow text-center sm:text-left space-y-2">
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                  <div>
-                    <h2 id="aboutPageName" data-i18n="aboutHeaderTitle" class="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">Software Engineer</h2>
-                    <p id="aboutPageRole" data-i18n="aboutHeaderRole" class="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Full-Stack & Systems Architecture</p>
-                  </div>
-                  <button id="openProfileModalBtn" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-md">
-                    <i data-lucide="user-cog" class="w-4 h-4"></i> <span data-i18n="editProfileBtn">Edit Intro & Profile</span>
-                  </button>
-                </div>
-
-                <p id="aboutPageBio" class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed pt-2">
-                  Welcome to Chunking view! I am a passionate software engineer focused on building robust backends, learning complex systems through first-principles chunking, and writing about my engineering path and personal life philosophy.
-                </p>
-
-                <!-- Location & Socials -->
-                <div class="flex flex-wrap items-center justify-center sm:justify-start gap-4 text-xs text-slate-500 dark:text-slate-400 pt-3">
-                  <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5 text-pink-500"></i> <span id="aboutPageLocation">Remote / Global</span></span>
-                  <a id="aboutPageGithub" href="#" target="_blank" class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition"><i data-lucide="github" class="w-3.5 h-3.5"></i> GitHub</a>
-                  <a id="aboutPageLinkedin" href="#" target="_blank" class="flex items-center gap-1 hover:text-indigo-600 dark:hover:text-indigo-400 transition"><i data-lucide="linkedin" class="w-3.5 h-3.5"></i> LinkedIn</a>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Skills & Focus Areas -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
-              <div class="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4">
-                <i data-lucide="code-2" class="w-5 h-5"></i>
-              </div>
-              <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Engineering Focus</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">System architecture, event-driven backends, database optimization, and scalable APIs.</p>
-            </div>
-
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
-              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4">
-                <i data-lucide="brain" class="w-5 h-5"></i>
-              </div>
-              <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Learning Method</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Deconstructing topics into first principles, continuous reading, and public documentation.</p>
-            </div>
-
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
-              <div class="w-10 h-10 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center mb-4">
-                <i data-lucide="heart" class="w-5 h-5"></i>
-              </div>
-              <h4 class="font-bold text-slate-900 dark:text-white text-base mb-2">Life View</h4>
-              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">Craftsmanship over quick hype, empathy in communication, and curious exploration.</p>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- VIEW 4: ENGINEERING ROADMAP & TIMELINE -->
-      <section id="roadmapSection" class="hidden">
-        <div class="max-w-4xl mx-auto">
-          <div class="text-center mb-12">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs font-semibold mb-3">
-              <i data-lucide="compass" class="w-3.5 h-3.5"></i> Career & Learning Evolution
-            </div>
-            <h2 class="font-display text-3xl font-extrabold text-slate-900 dark:text-white">Engineering & Growth Roadmap</h2>
-            <p class="text-slate-600 dark:text-slate-400 text-sm mt-2 max-w-lg mx-auto">Visual timeline mapping key technical milestones, architectural breakthroughs, and life lessons.</p>
-          </div>
-
-          <!-- Timeline Container -->
-          <div id="roadmapTimeline" class="relative border-l-2 border-slate-200 dark:border-slate-800 ml-4 sm:ml-32 space-y-12">
-            <!-- Timeline items rendered dynamically -->
-          </div>
-        </div>
-      </section>
-
-      <!-- VIEW 5: STATS & ANALYTICS DASHBOARD -->
-      <section id="statsSection" class="hidden">
-        <div class="max-w-5xl mx-auto space-y-8">
-          <div class="text-center mb-8">
-            <h2 class="font-display text-3xl font-extrabold text-slate-900 dark:text-white">Learning Metrics & Web Analytics</h2>
-            <p class="text-slate-600 dark:text-slate-400 text-sm mt-2">Quantitative overview of my digital garden activity and live visitor traffic.</p>
-          </div>
-
-          <!-- Metric Cards Grid -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
-              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span data-i18n="statArticles" class="text-xs font-medium">Total Articles</span>
-                <i data-lucide="file-text" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i>
-              </div>
-              <div id="statTotalPosts" class="text-3xl font-extrabold text-slate-900 dark:text-white">0</div>
-            </div>
-
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
-              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span data-i18n="statWords" class="text-xs font-medium">Total Words</span>
-                <i data-lucide="type" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i>
-              </div>
-              <div id="statTotalWords" class="text-3xl font-extrabold text-slate-900 dark:text-white">0</div>
-            </div>
-
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
-              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span data-i18n="statTodayViews" class="text-xs font-medium">Today's Page Views</span>
-                <i data-lucide="eye" class="w-4 h-4 text-amber-600 dark:text-amber-400"></i>
-              </div>
-              <div id="statTodayViews" class="text-3xl font-extrabold text-slate-900 dark:text-white">1</div>
-            </div>
-
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
-              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span data-i18n="statVisitors" class="text-xs font-medium">Daily Unique Visitors</span>
-                <i data-lucide="users" class="w-4 h-4 text-pink-600 dark:text-pink-400"></i>
-              </div>
-              <div id="statVisitors" class="text-3xl font-extrabold text-slate-900 dark:text-white">1</div>
-            </div>
-
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
-              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span data-i18n="statReadTime" class="text-xs font-medium">Est. Total Reading Time</span>
-                <i data-lucide="clock" class="w-4 h-4 text-sky-600 dark:text-sky-400"></i>
-              </div>
-              <div id="statTotalReadTime" class="text-3xl font-extrabold text-slate-900 dark:text-white">0 min</div>
-            </div>
-
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm">
-              <div class="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
-                <span data-i18n="statAnalyticsStatus" class="text-xs font-medium">Live Traffic Tracking</span>
-                <i data-lucide="activity" class="w-4 h-4 text-emerald-500 animate-pulse"></i>
-              </div>
-              <div class="text-sm font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5 mt-1">
-                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                <span data-i18n="statAnalyticsOnline">Active (GoatCounter)</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Distribution & Activity -->
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
-              <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                <i data-lucide="pie-chart" class="w-4 h-4 text-indigo-600 dark:text-indigo-400"></i> <span data-i18n="statBreakdown">Post Breakdown by Stream</span>
-              </h3>
-              <div id="categoryBreakdownList" class="space-y-4">
-                <!-- Breakdown items -->
-              </div>
-            </div>
-
-            <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm">
-              <h3 class="text-sm font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
-                <i data-lucide="tag" class="w-4 h-4 text-pink-600 dark:text-pink-400"></i> <span data-i18n="statTopTopics">Top Topics & Technologies</span>
-              </h3>
-              <div id="topTagsList" class="flex flex-wrap gap-2">
-                <!-- Tag pills -->
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
     </main>
 
     <!-- POST CREATOR & EDITOR STUDIO MODAL -->
@@ -485,40 +308,19 @@
             <h3 id="editorModalTitle" data-i18n="editorTitleNew" class="font-display font-bold text-lg text-slate-900 dark:text-white">Post Studio — Write New Entry</h3>
           </div>
           
-          <div class="flex items-center gap-2">
-            <!-- Preset Templates Dropdown -->
-            <select id="templateSelect" class="py-1.5 px-3 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-xl border border-slate-200 dark:border-slate-700 focus:outline-none">
-              <option value="" data-i18n="loadTemplate">Load Template...</option>
-              <option value="debug">🐛 Bug Log & Debug Fix</option>
-              <option value="engineering">💻 Engineering Architecture Note</option>
-              <option value="learning">📚 Book / Skill Summary</option>
-              <option value="life">💡 Life Reflection Essay</option>
-            </select>
-
-            <button id="closeEditorBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-              <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-          </div>
+          <button id="closeEditorBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
         </div>
 
         <!-- Modal Body -->
         <form id="postForm" class="p-6 overflow-y-auto flex-grow space-y-6">
           <input type="hidden" id="postId" value="">
 
-          <!-- Row 1: Title & Category -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div class="sm:col-span-2">
-              <label data-i18n="labelTitle" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Article Title *</label>
-              <input type="text" id="inputTitle" required placeholder="e.g. Mastered Event-Driven Architecture & Async Processing" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-            </div>
-            <div>
-              <label data-i18n="labelStream" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Stream / Category *</label>
-              <select id="inputCategory" required class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-                <option value="Engineering Path" data-i18n="catEngineering">💻 Engineering Path</option>
-                <option value="Personal Learning" data-i18n="catLearning">📚 Personal Learning</option>
-                <option value="View of Life" data-i18n="catLife">💡 View of Life</option>
-              </select>
-            </div>
+          <!-- Row 1: Title (Full Width) -->
+          <div>
+            <label data-i18n="labelTitle" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Article Title *</label>
+            <input type="text" id="inputTitle" required placeholder="e.g. Mastered Event-Driven Architecture & Async Processing" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
           </div>
 
           <!-- Row 2: Subtitle / Summary & Tags -->
@@ -592,67 +394,6 @@ const learn = () => 'Continuous Improvement';
             </button>
           </div>
         </div>
-
-      </div>
-    </div>
-
-    <!-- EDIT PROFILE / INTRO MODAL -->
-    <div id="profileModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-slate-900/40 dark:bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6">
-      <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden flex flex-col">
-        
-        <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-950/50">
-          <div class="flex items-center gap-2">
-            <i data-lucide="user-cog" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
-            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Edit Profile & Intro</h3>
-          </div>
-          <button id="closeProfileModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-white p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
-        </div>
-
-        <form id="profileForm" class="p-6 space-y-4">
-          <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Display Name *</label>
-            <input type="text" id="profileInputName" required placeholder="Your Name or Title" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Role / Headline *</label>
-            <input type="text" id="profileInputRole" required placeholder="e.g. Software Engineer & Lifelong Learner" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">About Me Intro Bio *</label>
-            <textarea id="profileInputBio" rows="4" required placeholder="Write a short summary about yourself..." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm leading-relaxed"></textarea>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Location</label>
-              <input type="text" id="profileInputLocation" placeholder="e.g. Remote / Global" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
-            </div>
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Avatar Image URL</label>
-              <input type="url" id="profileInputAvatar" placeholder="https://images.unsplash.com/photo-..." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">GitHub URL</label>
-              <input type="url" id="profileInputGithub" placeholder="https://github.com/username" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
-            </div>
-            <div>
-              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">LinkedIn URL</label>
-              <input type="url" id="profileInputLinkedin" placeholder="https://linkedin.com/in/username" class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white text-sm">
-            </div>
-          </div>
-
-          <div class="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
-            <button type="button" id="cancelProfileBtn" class="px-5 py-2 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium">Cancel</button>
-            <button type="submit" id="saveProfileBtn" class="px-6 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold shadow-md">Save Changes</button>
-          </div>
-        </form>
 
       </div>
     </div>

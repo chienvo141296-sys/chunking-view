@@ -2,7 +2,6 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   // State
-  let currentView = 'all'; // 'all', 'engineering', 'learning', 'life', 'about', 'roadmap', 'stats', 'bookmarks'
   let activeTag = null;
   let searchQuery = '';
   let activePostId = null;
@@ -26,9 +25,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchSection = document.getElementById('searchSection');
   const postsViewSection = document.getElementById('postsViewSection');
   const articleDetailSection = document.getElementById('articleDetailSection');
-  const aboutSection = document.getElementById('aboutSection');
-  const roadmapSection = document.getElementById('roadmapSection');
-  const statsSection = document.getElementById('statsSection');
 
   // i18n & Language Switcher
   const langToggleBtn = document.getElementById('langToggleBtn');
@@ -45,34 +41,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const inputId = document.getElementById('postId');
   const inputTitle = document.getElementById('inputTitle');
-  const inputCategory = document.getElementById('inputCategory');
   const inputExcerpt = document.getElementById('inputExcerpt');
   const inputTags = document.getElementById('inputTags');
   const inputCover = document.getElementById('inputCover');
   const inputContent = document.getElementById('inputContent');
 
   const randomCoverBtn = document.getElementById('randomCoverBtn');
-  const templateSelect = document.getElementById('templateSelect');
   const downloadMdBtn = document.getElementById('downloadMdBtn');
   const editorTabWrite = document.getElementById('editorTabWrite');
   const editorTabPreview = document.getElementById('editorTabPreview');
   const writePane = document.getElementById('writePane');
   const previewPane = document.getElementById('previewPane');
   const livePreviewOutput = document.getElementById('livePreviewOutput');
-
-  // Profile Modal Elements
-  const profileModal = document.getElementById('profileModal');
-  const openProfileModalBtn = document.getElementById('openProfileModalBtn');
-  const closeProfileModalBtn = document.getElementById('closeProfileModalBtn');
-  const cancelProfileBtn = document.getElementById('cancelProfileBtn');
-  const profileForm = document.getElementById('profileForm');
-  const profileInputName = document.getElementById('profileInputName');
-  const profileInputRole = document.getElementById('profileInputRole');
-  const profileInputBio = document.getElementById('profileInputBio');
-  const profileInputLocation = document.getElementById('profileInputLocation');
-  const profileInputAvatar = document.getElementById('profileInputAvatar');
-  const profileInputGithub = document.getElementById('profileInputGithub');
-  const profileInputLinkedin = document.getElementById('profileInputLinkedin');
 
   // Article Detail Elements
   const backToGridBtn = document.getElementById('backToGridBtn');
@@ -81,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const detailEditBtn = document.getElementById('detailEditBtn');
   const detailDeleteBtn = document.getElementById('detailDeleteBtn');
   const articleCoverImg = document.getElementById('articleCoverImg');
-  const articleCategoryBadge = document.getElementById('articleCategoryBadge');
   const articleTitle = document.getElementById('articleTitle');
   const articleDate = document.getElementById('articleDate');
   const articleReadTime = document.getElementById('articleReadTime');
@@ -102,7 +81,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize Application
   function init() {
     updateLanguageUI();
-    renderProfileUI();
     renderMainFeed();
     setupEventListeners();
     updateBookmarkBadge();
@@ -122,59 +100,11 @@ document.addEventListener('DOMContentLoaded', () => {
     searchInput.placeholder = i18n.t('searchPlaceholder');
   }
 
-  // --- PROFILE UI RENDERER ---
-  function renderProfileUI() {
-    const profile = StorageManager.getProfile();
-
-    document.getElementById('aboutPageName').innerText = profile.name;
-    document.getElementById('aboutPageRole').innerText = profile.role;
-    document.getElementById('aboutPageBio').innerText = profile.bio;
-    document.getElementById('aboutPageAvatar').src = profile.avatar;
-    document.getElementById('aboutPageLocation').innerText = profile.location || 'Remote / Global';
-    document.getElementById('aboutPageGithub').href = profile.github || '#';
-    document.getElementById('aboutPageLinkedin').href = profile.linkedin || '#';
-  }
-
-  function openProfileEditor() {
-    const profile = StorageManager.getProfile();
-    profileInputName.value = profile.name;
-    profileInputRole.value = profile.role;
-    profileInputBio.value = profile.bio;
-    profileInputLocation.value = profile.location || '';
-    profileInputAvatar.value = profile.avatar || '';
-    profileInputGithub.value = profile.github || '';
-    profileInputLinkedin.value = profile.linkedin || '';
-
-    profileModal.classList.remove('hidden');
-  }
-
-  function closeProfileEditor() {
-    profileModal.classList.add('hidden');
-  }
-
   // --- RENDER MAIN FEED & POST CARDS ---
   function renderMainFeed() {
     let posts = StorageManager.getPosts();
-    const isVi = i18n.getLang() === 'vi';
 
-    // 1. Stream View Filter
-    if (currentView === 'engineering') {
-      posts = posts.filter(p => p.category === 'Engineering Path');
-      sectionTitle.innerText = isVi ? 'Hành trình Kỹ thuật & Kiến trúc Hệ thống' : 'Engineering Path & System Architecture';
-    } else if (currentView === 'learning') {
-      posts = posts.filter(p => p.category === 'Personal Learning');
-      sectionTitle.innerText = isVi ? 'Học tập Cá nhân & Tóm tắt Sách' : 'Personal Learning & Book Summaries';
-    } else if (currentView === 'life') {
-      posts = posts.filter(p => p.category === 'View of Life');
-      sectionTitle.innerText = isVi ? 'Quan điểm Sống & Triết lý Sự nghiệp' : 'View of Life & Career Philosophy';
-    } else if (currentView === 'bookmarks') {
-      posts = posts.filter(p => p.bookmarked === true);
-      sectionTitle.innerText = isVi ? 'Bài viết Đã lưu' : 'Saved & Bookmarked Entries';
-    } else {
-      sectionTitle.innerText = i18n.t('latestArticles');
-    }
-
-    // 2. Tag Filter
+    // 1. Tag Filter
     if (activeTag) {
       posts = posts.filter(p => p.tags && p.tags.map(t => t.toLowerCase()).includes(activeTag.toLowerCase()));
       activeFilterBar.classList.remove('hidden');
@@ -183,18 +113,18 @@ document.addEventListener('DOMContentLoaded', () => {
       activeFilterBar.classList.add('hidden');
     }
 
-    // 3. Search Query Filter
+    // 2. Search Query Filter
     if (searchQuery.trim() !== '') {
       const q = searchQuery.toLowerCase();
       posts = posts.filter(p => 
         p.title.toLowerCase().includes(q) || 
         p.content.toLowerCase().includes(q) ||
         (p.excerpt && p.excerpt.toLowerCase().includes(q)) ||
-        p.tags.some(t => t.toLowerCase().includes(q))
+        (p.tags && p.tags.some(t => t.toLowerCase().includes(q)))
       );
     }
 
-    // 4. Sorting
+    // 3. Sorting
     const sortVal = sortSelect.value;
     if (sortVal === 'newest') {
       posts.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -223,10 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Create Post Card HTML
   function createPostCardHTML(post) {
     const isVi = i18n.getLang() === 'vi';
-    const categoryClass = post.category === 'Engineering Path' ? 'badge-engineering' :
-                          post.category === 'Personal Learning' ? 'badge-learning' : 'badge-life';
-
-    const categoryLabel = isVi ? (post.category === 'Engineering Path' ? 'Hành trình Kỹ thuật' : post.category === 'Personal Learning' ? 'Học tập Cá nhân' : 'Quan điểm Sống') : post.category;
 
     const tagsHtml = (post.tags || []).slice(0, 3).map(tag => 
       `<span class="tag-pill px-2.5 py-0.5 rounded-md bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 text-[11px] hover:border-indigo-500 hover:text-indigo-600 dark:hover:text-indigo-300 transition cursor-pointer" data-tag="${tag}">#${tag}</span>`
@@ -240,12 +166,6 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="h-48 w-full relative overflow-hidden bg-slate-900">
           <img src="${post.cover}" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-85">
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
-          
-          <div class="absolute top-3 left-3">
-            <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold tracking-wide ${categoryClass}">
-              ${categoryLabel}
-            </span>
-          </div>
 
           <button class="bookmark-btn absolute top-3 right-3 p-2 rounded-xl bg-slate-900/70 border border-slate-700/70 text-slate-200 hover:text-amber-400 backdrop-blur-md transition" data-id="${post.id}">
             <i data-lucide="bookmark" class="w-4 h-4 ${isBookmarked ? 'fill-amber-400 text-amber-400' : ''}"></i>
@@ -323,11 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
     articleTitle.innerText = post.title;
     articleDate.innerText = post.date;
     articleReadTime.innerText = post.readTime;
-    
-    const categoryClass = post.category === 'Engineering Path' ? 'badge-engineering' :
-                          post.category === 'Personal Learning' ? 'badge-learning' : 'badge-life';
-    articleCategoryBadge.className = `px-3 py-1 rounded-full text-xs font-semibold ${categoryClass}`;
-    articleCategoryBadge.innerText = post.category;
 
     // Render Markdown Body
     const htmlContent = MarkdownEngine.render(post.content);
@@ -393,8 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function renderRelatedNotes(currentPost) {
     const allPosts = StorageManager.getPosts().filter(p => p.id !== currentPost.id);
     const related = allPosts.filter(p => {
-      return (p.category === currentPost.category) ||
-             p.tags.some(t => currentPost.tags.includes(t));
+      return (p.tags && currentPost.tags && p.tags.some(t => currentPost.tags.includes(t)));
     }).slice(0, 2);
 
     if (related.length === 0) {
@@ -404,9 +318,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     relatedNotesGrid.innerHTML = related.map(rel => `
       <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 hover:border-indigo-500/50 transition cursor-pointer related-card shadow-sm" data-id="${rel.id}">
-        <div class="flex items-center gap-2 text-[10px] text-slate-500 dark:text-slate-400 mb-1">
-          <span class="text-indigo-600 dark:text-indigo-400 font-semibold">${rel.category}</span>
-        </div>
         <h5 class="text-xs font-bold text-slate-900 dark:text-white line-clamp-1 hover:text-indigo-600 dark:hover:text-indigo-300 transition">${rel.title}</h5>
       </div>
     `).join('');
@@ -416,112 +327,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- RENDER ROADMAP VIEW ---
-  function renderRoadmapView() {
-    const roadmap = StorageManager.getRoadmap();
-    const container = document.getElementById('roadmapTimeline');
-
-    container.innerHTML = roadmap.map(item => `
-      <div class="relative pl-6 sm:pl-8 group">
-        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full border-2 border-slate-50 dark:border-slate-950 bg-indigo-500 shadow-lg shadow-indigo-500/50 group-hover:scale-125 transition"></div>
-
-        <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800/80 rounded-2xl p-6 hover:border-indigo-500/50 transition shadow-lg dark:shadow-xl">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-            <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">${item.date}</span>
-            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-              ${item.status}
-            </span>
-          </div>
-
-          <h3 class="font-display text-lg font-bold text-slate-900 dark:text-white mb-2">${item.title}</h3>
-          <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">${item.description}</p>
-        </div>
-      </div>
-    `).join('');
-
-    if (window.lucide) lucide.createIcons();
-  }
-
-  // --- RENDER STATS VIEW ---
-  function renderStatsView() {
-    const posts = StorageManager.getPosts();
-    let totalWords = 0;
-    let totalMinutes = 0;
-    const catCounts = { 'Engineering Path': 0, 'Personal Learning': 0, 'View of Life': 0 };
-    const tagFreq = {};
-
-    posts.forEach(p => {
-      const words = MarkdownEngine.countWords(p.content);
-      totalWords += words;
-      totalMinutes += parseInt(p.readTime) || 1;
-      if (catCounts[p.category] !== undefined) catCounts[p.category]++;
-
-      (p.tags || []).forEach(t => {
-        tagFreq[t] = (tagFreq[t] || 0) + 1;
-      });
-    });
-
-    document.getElementById('statTotalPosts').innerText = posts.length;
-    document.getElementById('statTotalWords').innerText = totalWords.toLocaleString();
-    document.getElementById('statTotalReadTime').innerText = `${totalMinutes} min`;
-    document.getElementById('statCategoriesCount').innerText = Object.keys(catCounts).length;
-
-    // Breakdown List
-    const breakdownContainer = document.getElementById('categoryBreakdownList');
-    breakdownContainer.innerHTML = Object.keys(catCounts).map(cat => {
-      const count = catCounts[cat];
-      const percent = posts.length > 0 ? Math.round((count / posts.length) * 100) : 0;
-      const color = cat === 'Engineering Path' ? 'bg-blue-500' : cat === 'Personal Learning' ? 'bg-emerald-500' : 'bg-pink-500';
-
-      return `
-        <div>
-          <div class="flex justify-between text-xs font-medium mb-1">
-            <span class="text-slate-700 dark:text-slate-300">${cat}</span>
-            <span class="text-slate-500 dark:text-slate-400">${count} posts (${percent}%)</span>
-          </div>
-          <div class="w-full bg-slate-200 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
-            <div class="${color} h-2 rounded-full" style="width: ${percent}%"></div>
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    // Top Tags
-    const topTagsContainer = document.getElementById('topTagsList');
-    const sortedTags = Object.keys(tagFreq).sort((a, b) => tagFreq[b] - tagFreq[a]);
-
-    topTagsContainer.innerHTML = sortedTags.map(t => `
-      <span class="px-3 py-1.5 bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-xl flex items-center gap-1.5">
-        <i data-lucide="hash" class="w-3 h-3 text-indigo-600 dark:text-indigo-400"></i> ${t}
-        <span class="px-1.5 py-0.5 rounded-md bg-slate-200 dark:bg-slate-800 text-[10px] text-slate-600 dark:text-slate-400 font-bold">${tagFreq[t]}</span>
-      </span>
-    `).join('');
-
-    if (window.lucide) lucide.createIcons();
-  }
-
   // --- VIEW SWITCHING MANAGER ---
   function switchViewSection(view) {
     if (searchSection) searchSection.classList.add('hidden');
     postsViewSection.classList.add('hidden');
     articleDetailSection.classList.add('hidden');
-    aboutSection.classList.add('hidden');
-    roadmapSection.classList.add('hidden');
-    statsSection.classList.add('hidden');
 
     if (view === 'detail') {
       articleDetailSection.classList.remove('hidden');
-    } else if (view === 'about') {
-      aboutSection.classList.remove('hidden');
-      renderProfileUI();
-    } else if (view === 'roadmap') {
-      roadmapSection.classList.remove('hidden');
-      renderRoadmapView();
-    } else if (view === 'stats') {
-      statsSection.classList.remove('hidden');
-      renderStatsView();
     } else {
-      currentView = view;
       if (searchSection) searchSection.classList.remove('hidden');
       postsViewSection.classList.remove('hidden');
       renderMainFeed();
@@ -536,7 +350,6 @@ document.addEventListener('DOMContentLoaded', () => {
         editorModalTitle.innerText = i18n.t('editorTitleEdit');
         inputId.value = post.id;
         inputTitle.value = post.title;
-        inputCategory.value = post.category;
         inputExcerpt.value = post.excerpt || '';
         inputTags.value = (post.tags || []).join(', ');
         inputCover.value = post.cover || '';
@@ -546,7 +359,7 @@ document.addEventListener('DOMContentLoaded', () => {
       editorModalTitle.innerText = i18n.t('editorTitleNew');
       postForm.reset();
       inputId.value = '';
-      inputContent.value = TEMPLATES.engineering;
+      inputContent.value = '';
       inputCover.value = PRESET_COVERS[Math.floor(Math.random() * PRESET_COVERS.length)];
     }
 
@@ -586,28 +399,6 @@ document.addEventListener('DOMContentLoaded', () => {
       renderMainFeed();
       if (activePostId) openArticleDetail(activePostId);
       showToast(next === 'vi' ? 'Đã chuyển sang Tiếng Việt!' : 'Switched to English!', 'info');
-    });
-
-    openProfileModalBtn.addEventListener('click', openProfileEditor);
-    closeProfileModalBtn.addEventListener('click', closeProfileEditor);
-    cancelProfileBtn.addEventListener('click', closeProfileEditor);
-
-    profileForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const newProfile = {
-        name: profileInputName.value.trim() || 'Software Engineer',
-        role: profileInputRole.value.trim() || 'Full-Stack Developer',
-        bio: profileInputBio.value.trim(),
-        location: profileInputLocation.value.trim() || 'Remote / Global',
-        avatar: profileInputAvatar.value.trim() || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
-        github: profileInputGithub.value.trim(),
-        linkedin: profileInputLinkedin.value.trim()
-      };
-
-      StorageManager.saveProfile(newProfile);
-      closeProfileEditor();
-      renderProfileUI();
-      showToast('Profile intro updated!', 'success');
     });
 
     navBrand.addEventListener('click', () => {
@@ -676,7 +467,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    backToGridBtn.addEventListener('click', () => switchViewSection(currentView));
+    backToGridBtn.addEventListener('click', () => switchViewSection('all'));
     
     detailBookmarkBtn.addEventListener('click', () => {
       if (activePostId) {
@@ -727,20 +518,9 @@ document.addEventListener('DOMContentLoaded', () => {
       inputCover.value = PRESET_COVERS[Math.floor(Math.random() * PRESET_COVERS.length)];
     });
 
-    templateSelect.addEventListener('change', (e) => {
-      const template = TEMPLATES[e.target.value];
-      if (template) {
-        if (inputContent.value.trim() !== '' && !confirm('Overwrite current editor content with template?')) {
-          return;
-        }
-        inputContent.value = template;
-      }
-    });
-
     downloadMdBtn.addEventListener('click', () => {
       const tempPost = {
         title: inputTitle.value || 'Untitled',
-        category: inputCategory.value,
         date: new Date().toISOString().split('T')[0],
         tags: inputTags.value.split(',').map(t => t.trim()).filter(Boolean),
         cover: inputCover.value,
@@ -762,7 +542,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const postData = {
         id: inputId.value || undefined,
         title: inputTitle.value.trim(),
-        category: inputCategory.value,
+        category: 'Personal Learning',
         excerpt: inputExcerpt.value.trim(),
         tags: inputTags.value.split(',').map(t => t.trim()).filter(Boolean),
         cover: inputCover.value.trim() || PRESET_COVERS[0],
@@ -792,7 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     bookmarksBtn.addEventListener('click', () => {
-      switchViewSection('bookmarks');
+      showToast('Viewing saved posts', 'info');
     });
 
     exportAllBtn.addEventListener('click', () => {
