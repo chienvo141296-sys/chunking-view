@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const bookmarkBadge = document.getElementById('bookmarkBadge');
 
   // View Sections
-  const heroSection = document.getElementById('heroSection');
+  const searchSection = document.getElementById('searchSection');
   const postsViewSection = document.getElementById('postsViewSection');
   const articleDetailSection = document.getElementById('articleDetailSection');
   const aboutSection = document.getElementById('aboutSection');
@@ -62,7 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Profile Modal Elements
   const profileModal = document.getElementById('profileModal');
-  const heroEditProfileBtn = document.getElementById('heroEditProfileBtn');
   const openProfileModalBtn = document.getElementById('openProfileModalBtn');
   const closeProfileModalBtn = document.getElementById('closeProfileModalBtn');
   const cancelProfileBtn = document.getElementById('cancelProfileBtn');
@@ -74,7 +73,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const profileInputAvatar = document.getElementById('profileInputAvatar');
   const profileInputGithub = document.getElementById('profileInputGithub');
   const profileInputLinkedin = document.getElementById('profileInputLinkedin');
-  const heroViewAboutTabBtn = document.getElementById('heroViewAboutTabBtn');
 
   // Article Detail Elements
   const backToGridBtn = document.getElementById('backToGridBtn');
@@ -127,11 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- PROFILE UI RENDERER ---
   function renderProfileUI() {
     const profile = StorageManager.getProfile();
-
-    document.getElementById('heroProfileName').innerText = profile.name;
-    document.getElementById('heroProfileRole').innerText = profile.role;
-    document.getElementById('heroProfileBio').innerText = profile.bio;
-    document.getElementById('heroAvatar').src = profile.avatar;
 
     document.getElementById('aboutPageName').innerText = profile.name;
     document.getElementById('aboutPageRole').innerText = profile.role;
@@ -509,22 +502,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- VIEW SWITCHING MANAGER ---
   function switchViewSection(view) {
-    heroSection.classList.add('hidden');
+    if (searchSection) searchSection.classList.add('hidden');
     postsViewSection.classList.add('hidden');
     articleDetailSection.classList.add('hidden');
     aboutSection.classList.add('hidden');
     roadmapSection.classList.add('hidden');
     statsSection.classList.add('hidden');
-
-    document.querySelectorAll('.nav-tab').forEach(tab => {
-      if (tab.dataset.view === view) {
-        tab.classList.add('active');
-        tab.classList.remove('text-slate-600', 'dark:text-slate-400');
-      } else {
-        tab.classList.remove('active');
-        tab.classList.add('text-slate-600', 'dark:text-slate-400');
-      }
-    });
 
     if (view === 'detail') {
       articleDetailSection.classList.remove('hidden');
@@ -539,7 +522,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renderStatsView();
     } else {
       currentView = view;
-      heroSection.classList.remove('hidden');
+      if (searchSection) searchSection.classList.remove('hidden');
       postsViewSection.classList.remove('hidden');
       renderMainFeed();
     }
@@ -595,7 +578,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- EVENT LISTENERS SETUP ---
   function setupEventListeners() {
-    // Language Toggle Listener
     langToggleBtn.addEventListener('click', () => {
       const current = i18n.getLang();
       const next = current === 'en' ? 'vi' : 'en';
@@ -606,20 +588,9 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast(next === 'vi' ? 'Đã chuyển sang Tiếng Việt!' : 'Switched to English!', 'info');
     });
 
-    document.querySelectorAll('.nav-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        const view = tab.dataset.view;
-        activeTag = null;
-        switchViewSection(view);
-      });
-    });
-
-    heroEditProfileBtn.addEventListener('click', openProfileEditor);
     openProfileModalBtn.addEventListener('click', openProfileEditor);
     closeProfileModalBtn.addEventListener('click', closeProfileEditor);
     cancelProfileBtn.addEventListener('click', closeProfileEditor);
-
-    heroViewAboutTabBtn.addEventListener('click', () => switchViewSection('about'));
 
     profileForm.addEventListener('submit', (e) => {
       e.preventDefault();

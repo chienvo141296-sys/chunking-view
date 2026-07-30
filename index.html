@@ -73,7 +73,7 @@
 
   <div class="relative z-10 flex flex-col min-h-screen">
     
-    <!-- Clean Minimal Header (Only Chunking view Logo on Left + Action Controls on Right) -->
+    <!-- Clean Minimal Header (Chunking view Logo + Action Controls) -->
     <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/90 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800/80 transition-colors">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 sm:h-20">
@@ -126,84 +126,33 @@
     <!-- Main Container -->
     <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
       
-      <!-- HERO BANNER (Shown on Main Feed View) -->
-      <section id="heroSection" class="mb-10 relative overflow-hidden rounded-3xl bg-gradient-to-r from-white via-indigo-50/60 to-slate-100 dark:from-slate-900 dark:via-indigo-950/40 dark:to-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 sm:p-10 shadow-xl dark:shadow-2xl">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-          
-          <!-- Hero Main Copy -->
-          <div class="lg:col-span-2 relative z-10">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-semibold uppercase tracking-wider mb-4">
-              <span class="w-2 h-2 rounded-full bg-indigo-500 dark:bg-indigo-400 animate-ping"></span>
-              <span data-i18n="heroBadge">Chunking view • Personal Learning Journal</span>
-            </div>
-            <h1 class="font-display text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-4 leading-tight">
-              <span data-i18n="heroTitlePrefix">Chunking Knowledge:</span> <span data-i18n="heroTitleCode" class="bg-gradient-to-r from-indigo-600 via-sky-600 to-pink-600 dark:from-indigo-400 dark:via-sky-400 dark:to-pink-400 bg-clip-text text-transparent">Code</span>, <span data-i18n="heroTitleMindset" class="bg-gradient-to-r from-emerald-600 to-teal-500 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">Mindset</span> & <span data-i18n="heroTitleLife" class="bg-gradient-to-r from-pink-600 to-rose-500 dark:from-pink-400 dark:to-rose-300 bg-clip-text text-transparent">Life</span>.
-            </h1>
-            <p data-i18n="heroDescription" class="text-slate-600 dark:text-slate-300 text-sm sm:text-base mb-6 leading-relaxed">
-              Welcome to my digital blog. Deconstructing complex systems into digestible mental chunks, documenting software architecture, and recording my personal growth journey.
-            </p>
-
-            <!-- Quick Search & Filter Controls Bar -->
-            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <div class="relative flex-grow">
-                <i data-lucide="search" class="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400"></i>
-                <input type="text" id="searchInput" placeholder="Search posts, code snippets, tags or concepts..." class="w-full pl-10 pr-10 py-3 bg-white dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-sm shadow-sm">
-                <button id="clearSearchBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
-                  <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
-              </div>
-              
-              <div class="flex items-center gap-2">
-                <select id="sortSelect" class="py-3 px-4 bg-white dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-700 dark:text-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm">
-                  <option value="newest" data-i18n="sortNewest">Latest First</option>
-                  <option value="oldest" data-i18n="sortOldest">Oldest First</option>
-                  <option value="readTime" data-i18n="sortReadTime">Read Time</option>
-                  <option value="title" data-i18n="sortTitle">Title (A-Z)</option>
-                </select>
-
-                <button id="exportAllBtn" title="Export / Backup All Posts (JSON)" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm">
-                  <i data-lucide="download" class="w-4 h-4"></i>
-                </button>
-                <label for="importFile" title="Import Posts (JSON)" class="p-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-slate-300 dark:hover:border-slate-700 transition shadow-sm cursor-pointer">
-                  <i data-lucide="upload" class="w-4 h-4"></i>
-                  <input type="file" id="importFile" accept=".json" class="hidden">
-                </label>
-              </div>
-            </div>
-          </div>
-
-          <!-- Hero About Me Quick Profile Box -->
-          <div class="lg:col-span-1 bg-white/80 dark:bg-slate-950/80 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-lg relative">
-            <div class="flex items-center justify-between mb-3">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-full bg-gradient-to-r from-indigo-500 to-pink-500 p-0.5 shadow-md">
-                  <img id="heroAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" alt="Avatar" class="w-full h-full rounded-full object-cover">
-                </div>
-                <div>
-                  <h3 id="heroProfileName" class="font-display font-bold text-base text-slate-900 dark:text-white">Software Engineer</h3>
-                  <p id="heroProfileRole" class="text-xs text-indigo-600 dark:text-indigo-400 font-medium">Full-Stack & Systems</p>
-                </div>
-              </div>
-              <button id="heroEditProfileBtn" title="Edit About Myself" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition">
-                <i data-lucide="user-cog" class="w-4 h-4"></i>
-              </button>
-            </div>
-            
-            <p id="heroProfileBio" class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-4 line-clamp-3">
-              Documenting my software engineering path, mental models, and personal life reflections. Learning in public every single day.
-            </p>
-
-            <div id="heroProfileSkills" class="flex flex-wrap gap-1 mb-4">
-              <span class="px-2 py-0.5 rounded-md bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 text-[10px] font-semibold">System Architecture</span>
-              <span class="px-2 py-0.5 rounded-md bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 text-[10px] font-semibold">Mental Models</span>
-              <span class="px-2 py-0.5 rounded-md bg-pink-50 dark:bg-pink-950/80 text-pink-700 dark:text-pink-300 text-[10px] font-semibold">Life Philosophy</span>
-            </div>
-
-            <button id="heroViewAboutTabBtn" class="w-full py-2 bg-slate-100 dark:bg-slate-900 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-1">
-              <span data-i18n="heroReadBio">Read Full Bio</span> <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+      <!-- MINIMAL SEARCH SECTION (Replaces Hero Banner) -->
+      <section id="searchSection" class="mb-10 max-w-3xl mx-auto">
+        <div class="flex flex-col sm:flex-row items-center gap-3">
+          <div class="relative flex-grow w-full">
+            <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400"></i>
+            <input type="text" id="searchInput" placeholder="Search posts, code snippets, tags or concepts..." class="w-full pl-12 pr-12 py-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition text-base shadow-lg dark:shadow-2xl">
+            <button id="clearSearchBtn" class="hidden absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+              <i data-lucide="x" class="w-5 h-5"></i>
             </button>
           </div>
 
+          <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+            <select id="sortSelect" class="py-3.5 px-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-700 dark:text-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-md">
+              <option value="newest" data-i18n="sortNewest">Latest First</option>
+              <option value="oldest" data-i18n="sortOldest">Oldest First</option>
+              <option value="readTime" data-i18n="sortReadTime">Read Time</option>
+              <option value="title" data-i18n="sortTitle">Title (A-Z)</option>
+            </select>
+
+            <button id="exportAllBtn" title="Export / Backup All Posts (JSON)" class="p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition shadow-md">
+              <i data-lucide="download" class="w-4 h-4"></i>
+            </button>
+            <label for="importFile" title="Import Posts (JSON)" class="p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition shadow-md cursor-pointer">
+              <i data-lucide="upload" class="w-4 h-4"></i>
+              <input type="file" id="importFile" accept=".json" class="hidden">
+            </label>
+          </div>
         </div>
       </section>
 
