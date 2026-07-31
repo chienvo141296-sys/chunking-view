@@ -529,7 +529,8 @@ document.addEventListener('DOMContentLoaded', () => {
       StorageManager.exportPostMD(tempPost);
     });
 
-    savePostBtn.addEventListener('click', () => {
+    postForm.addEventListener('submit', (e) => {
+      e.preventDefault();
       if (!inputTitle.value.trim()) {
         alert('Please enter a post title');
         return;
@@ -549,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
         content: inputContent.value
       };
 
-      const updatedPosts = StorageManager.upsertPost(postData);
+      StorageManager.upsertPost(postData);
       closeEditor();
 
       if (typeof confetti !== 'undefined') {
@@ -557,12 +558,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       showToast('Article published successfully!', 'success');
-
-      if (activePostId && activePostId === postData.id) {
-        openArticleDetail(postData.id);
-      } else {
-        switchViewSection('all');
-      }
+      switchViewSection('all');
+      renderMainFeed();
     });
 
     themeToggleBtn.addEventListener('click', () => {

@@ -373,11 +373,6 @@ const learn = () => 'Continuous Improvement';
             <div id="previewPane" class="hidden min-h-[300px] p-6 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl overflow-y-auto max-h-[400px]">
               <div id="livePreviewOutput" class="prose dark:prose-invert max-w-none text-sm">
                 <p class="text-slate-400 italic">Start typing content to see live markdown rendering...</p>
-              </div>
-            </div>
-          </div>
-        </form>
-
         <!-- Modal Footer -->
         <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex items-center justify-between">
           <button type="button" id="downloadMdBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition flex items-center gap-1.5">
@@ -388,11 +383,12 @@ const learn = () => 'Continuous Improvement';
             <button type="button" id="cancelEditorBtn" class="px-5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium transition" data-i18n="btnCancel">
               Cancel
             </button>
-            <button type="button" id="savePostBtn" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+            <button type="submit" id="savePostBtn" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
               <i data-lucide="send" class="w-4 h-4"></i> <span data-i18n="btnPublish">Publish Post</span>
             </button>
           </div>
         </div>
+        </form>
 
       </div>
     </div>
