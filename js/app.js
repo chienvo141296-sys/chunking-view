@@ -95,6 +95,12 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     updateBookmarkBadge();
     if (window.lucide) lucide.createIcons();
+
+    // Trigger Cloud Realtime DB Sync across all devices (mobile phones & PCs)
+    StorageManager.fetchCloudPosts(() => {
+      renderMainFeed();
+      updateBookmarkBadge();
+    });
   }
 
   // --- ADMIN AUTHENTICATION GUARD ---

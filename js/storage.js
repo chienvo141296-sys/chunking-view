@@ -1,8 +1,9 @@
-// LocalStorage & Post Data Management Layer
+// LocalStorage & Cloud Realtime Post Data Management Layer
 
 const STORAGE_KEY_POSTS = 'chunking_view_posts_v3';
 const STORAGE_KEY_ROADMAP = 'chunking_view_roadmap_v2';
 const STORAGE_KEY_PROFILE = 'chunking_view_profile_v2';
+const CLOUD_API_URL = 'https://jsonblob.com/api/jsonBlob/019fb5ea-a201-7b3f-b17b-3ea416a6c83d';
 
 const DEFAULT_PROFILE = {
   name: "Software Engineer",
@@ -47,14 +48,13 @@ class StorageManager {
     }
 
     // 2. If no user posts found anywhere in browser storage, seed with default INITIAL_POSTS
-    if (postMap.size === 0) {
+    if (postMap.size === 0 && typeof INITIAL_POSTS !== 'undefined') {
       INITIAL_POSTS.forEach(post => {
         postMap.set(post.id || post.title, post);
       });
     }
 
     const mergedPosts = Array.from(postMap.values());
-    this.savePosts(mergedPosts);
     return mergedPosts;
   }
 
@@ -63,6 +63,67 @@ class StorageManager {
       localStorage.setItem(STORAGE_KEY_POSTS, JSON.stringify(posts));
     } catch (e) {
       console.error('Failed to save posts to localStorage', e);
+    }
+  }
+
+  // --- CLOUD REALTIME SYNC (Cross-Device: Mobile Phones, PCs, Tablets) ---
+  static async fetchCloudPosts(onUpdateCallback) {
+    try {
+      const response = await fetch(CLOUD_API_URL, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        cache: 'no-cache'
+      });
+
+      if (response.ok) {
+        const cloudPosts = await response.json();
+        if (Array.isArray(cloudPosts) && cloudPosts.length > 0) {
+          const postMap = new Map();
+
+          // Load cloud posts first
+          cloudPosts.forEach(post => {
+            if (post && post.title) {
+              postMap.set(post.id || post.title, post);
+            }
+          });
+
+          // Merge local posts
+          const localPosts = this.getPosts();
+          localPosts.forEach(post => {
+            const key = post.id || post.title;
+            if (!postMap.has(key)) {
+              postMap.set(key, post);
+            }
+          });
+
+          const merged = Array.from(postMap.values());
+          this.savePosts(merged);
+
+          if (typeof onUpdateCallback === 'function') {
+            onUpdateCallback(merged);
+          }
+          return merged;
+        }
+      }
+    } catch (err) {
+      console.warn('Could not fetch cloud posts live:', err);
+    }
+    return this.getPosts();
+  }
+
+  static async pushCloudPosts(posts) {
+    try {
+      await fetch(CLOUD_API_URL, {
+        method: 'PUT',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(posts)
+      });
+      console.log('Successfully pushed posts to Cloud Database');
+    } catch (err) {
+      console.error('Cloud Database push error:', err);
     }
   }
 
@@ -94,12 +155,14 @@ class StorageManager {
     }
 
     this.savePosts(posts);
+    this.pushCloudPosts(posts); // Sync instantly across all mobile phones & PCs
     return posts;
   }
 
   static deletePost(id) {
     const posts = this.getPosts().filter(p => p.id !== id && p.title !== id);
     this.savePosts(posts);
+    this.pushCloudPosts(posts); // Sync deletion across all mobile phones & PCs
     return posts;
   }
 
@@ -109,20 +172,21 @@ class StorageManager {
     if (post) {
       post.bookmarked = !post.bookmarked;
       this.savePosts(posts);
+      this.pushCloudPosts(posts);
     }
     return posts;
   }
 
   static getRoadmap() {
     const raw = localStorage.getItem(STORAGE_KEY_ROADMAP);
-    if (!raw) {
+    if (!raw && typeof INITIAL_ROADMAP !== 'undefined') {
       localStorage.setItem(STORAGE_KEY_ROADMAP, JSON.stringify(INITIAL_ROADMAP));
       return INITIAL_ROADMAP;
     }
     try {
       return JSON.parse(raw);
     } catch (e) {
-      return INITIAL_ROADMAP;
+      return typeof INITIAL_ROADMAP !== 'undefined' ? INITIAL_ROADMAP : [];
     }
   }
 
@@ -159,7 +223,7 @@ class StorageManager {
     const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(this.getPosts(), null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute("href", dataStr);
-    downloadAnchor.setAttribute("download", `chunking_view_backup_${new Date().toISOString().split('T')[0]}.json`);
+    downloadAnchor.setAttribute("download", `chunking_backup_${new Date().toISOString().split('T')[0]}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -191,6 +255,7 @@ ${post.content}`;
       const imported = JSON.parse(jsonString);
       if (Array.isArray(imported)) {
         this.savePosts(imported);
+        this.pushCloudPosts(imported);
         return true;
       }
     } catch (e) {
