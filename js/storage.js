@@ -51,7 +51,7 @@ class StorageManager {
       console.warn('Error scanning localStorage keys:', e);
     }
 
-    // 2. If no user posts found anywhere, seed with INITIAL_POSTS
+    // 2. Seed with INITIAL_POSTS if no local posts found
     if (postMap.size === 0) {
       INITIAL_POSTS.forEach(post => {
         postMap.set(post.id || post.title, post);
@@ -100,10 +100,18 @@ class StorageManager {
 
     this.savePosts(posts);
 
-    // Trigger Cloud Sync to GitHub API in background
+    // Trigger Cloud Sync to GitHub API
     this.syncToGitHub(postData);
 
     return posts;
+  }
+
+  // --- SAFE UTF-8 BASE64 ENCODER FOR VIETNAMESE & UNICODE ---
+  static utf8ToBase64(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    bytes.forEach(b => bin += String.fromCharCode(b));
+    return btoa(bin);
   }
 
   // --- AUTOMATIC GITHUB API CLOUD SYNC ---
@@ -112,24 +120,24 @@ class StorageManager {
       const path = 'js/data.js';
       const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
 
-      // 1. Fetch current file SHA from GitHub API
+      // 1. Fetch current file info & SHA from GitHub API
       const res = await fetch(apiUrl, {
         headers: { 'Authorization': `token ${G_TOK}` }
       });
 
       if (!res.ok) {
-        console.warn('GitHub API fetch failed:', res.status);
+        console.warn('GitHub API fetch returned status:', res.status);
         return;
       }
 
       const fileInfo = await res.json();
       const currentPosts = this.getPosts();
 
-      // 2. Prepare new data.js file content
+      // 2. Prepare updated data.js code
       const updatedCode = `// Seed Data for Chunking Blog\n\nconst PRESET_COVERS = ${JSON.stringify(PRESET_COVERS, null, 2)};\n\nconst INITIAL_POSTS = ${JSON.stringify(currentPosts, null, 2)};\n\nconst INITIAL_ROADMAP = [];\n`;
 
-      // 3. Base64 encode for GitHub API
-      const encodedContent = btoa(unescape(encodeURIComponent(updatedCode)));
+      // 3. Encode safely with UTF-8 support
+      const encodedContent = this.utf8ToBase64(updatedCode);
 
       // 4. Commit updated file to GitHub repo
       const putRes = await fetch(apiUrl, {
@@ -146,12 +154,49 @@ class StorageManager {
       });
 
       if (putRes.ok) {
-        console.log('Successfully synced post to GitHub repository!');
+        console.log('Successfully synced post to GitHub cloud!');
       } else {
         console.warn('GitHub API commit returned status:', putRes.status);
       }
     } catch (e) {
       console.error('GitHub API Cloud Sync error:', e);
+    }
+  }
+
+  // --- AUTOMATIC REMOTE UPDATES CHECK ON PAGE LOAD ---
+  static async checkRemoteUpdates(onUpdatedCallback) {
+    try {
+      const url = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/master/js/data.js?t=${Date.now()}`;
+      const res = await fetch(url);
+      if (res.ok) {
+        const text = await res.text();
+        const match = text.match(/const INITIAL_POSTS = (\[[\s\S]*?\]);/);
+        if (match && match[1]) {
+          const remotePosts = JSON.parse(match[1]);
+          if (Array.isArray(remotePosts) && remotePosts.length > 0) {
+            const currentPosts = this.getPosts();
+            const currentIds = new Set(currentPosts.map(p => p.id || p.title));
+            let newFound = false;
+
+            remotePosts.forEach(rp => {
+              const key = rp.id || rp.title;
+              if (!currentIds.has(key)) {
+                currentPosts.unshift(rp);
+                newFound = true;
+              }
+            });
+
+            if (newFound) {
+              this.savePosts(currentPosts);
+              if (typeof onUpdatedCallback === 'function') {
+                onUpdatedCallback();
+              }
+            }
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Could not fetch remote updates:', e);
     }
   }
 

@@ -104,6 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     updateBookmarkBadge();
     if (window.lucide) lucide.createIcons();
+
+    // Auto-check remote updates from GitHub on load for instant cross-device sync
+    StorageManager.checkRemoteUpdates(() => {
+      renderMainFeed();
+    });
   }
 
   // --- i18n DYNAMIC UI UPDATER ---
