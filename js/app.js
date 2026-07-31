@@ -1,11 +1,15 @@
-// Main Application Controller for Chunking view Blog
+// Main Application Controller for Chunking Blog
 
 document.addEventListener('DOMContentLoaded', () => {
   // State
   let activeTag = null;
   let searchQuery = '';
   let activePostId = null;
+  let pendingAdminAction = null; // callback action after admin unlock
   let isDarkMode = document.documentElement.classList.contains('dark');
+
+  const ADMIN_PASSCODE_KEY = 'chunking_admin_passcode_v1';
+  const DEFAULT_PASSCODE = '123456';
 
   // DOM Elements
   const postsGrid = document.getElementById('postsGrid');
@@ -29,6 +33,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // i18n & Language Switcher
   const langToggleBtn = document.getElementById('langToggleBtn');
   const langCurrentText = document.getElementById('langCurrentText');
+
+  // Admin Auth Modal Elements
+  const adminAuthModal = document.getElementById('adminAuthModal');
+  const closeAdminAuthBtn = document.getElementById('closeAdminAuthBtn');
+  const adminAuthForm = document.getElementById('adminAuthForm');
+  const adminPasscodeInput = document.getElementById('adminPasscodeInput');
 
   // Editor Modal Elements
   const editorModal = document.getElementById('editorModal');
@@ -85,6 +95,26 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     updateBookmarkBadge();
     if (window.lucide) lucide.createIcons();
+  }
+
+  // --- ADMIN AUTHENTICATION GUARD ---
+  function requireAdminAuth(onSuccessCallback) {
+    const isUnlocked = sessionStorage.getItem('chunking_admin_unlocked') === 'true';
+    if (isUnlocked) {
+      onSuccessCallback();
+      return;
+    }
+
+    pendingAdminAction = onSuccessCallback;
+    adminPasscodeInput.value = '';
+    adminAuthModal.classList.remove('hidden');
+    adminPasscodeInput.focus();
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function closeAdminAuth() {
+    adminAuthModal.classList.add('hidden');
+    pendingAdminAction = null;
   }
 
   // --- i18n DYNAMIC UI UPDATER ---
@@ -401,6 +431,30 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast(next === 'vi' ? 'Đã chuyển sang Tiếng Việt!' : 'Switched to English!', 'info');
     });
 
+    // Admin Security Verification Form Listener
+    closeAdminAuthBtn.addEventListener('click', closeAdminAuth);
+
+    adminAuthForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const entered = adminPasscodeInput.value.trim();
+      const expected = localStorage.getItem(ADMIN_PASSCODE_KEY) || DEFAULT_PASSCODE;
+
+      if (entered === expected) {
+        sessionStorage.setItem('chunking_admin_unlocked', 'true');
+        showToast(i18n.t('adminUnlocked'), 'success');
+        adminAuthModal.classList.add('hidden');
+        if (pendingAdminAction) {
+          const action = pendingAdminAction;
+          pendingAdminAction = null;
+          action();
+        }
+      } else {
+        showToast(i18n.t('adminWrongPasscode'), 'error');
+        adminPasscodeInput.value = '';
+        adminPasscodeInput.focus();
+      }
+    });
+
     navBrand.addEventListener('click', () => {
       activeTag = null;
       searchQuery = '';
@@ -485,15 +539,22 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Guard Edit & Delete buttons with Admin Passcode
     detailEditBtn.addEventListener('click', () => {
-      if (activePostId) openEditor(activePostId);
+      if (activePostId) {
+        requireAdminAuth(() => openEditor(activePostId));
+      }
     });
 
     detailDeleteBtn.addEventListener('click', () => {
-      if (activePostId && confirm('Are you sure you want to delete this article?')) {
-        StorageManager.deletePost(activePostId);
-        showToast('Article deleted', 'error');
-        switchViewSection('all');
+      if (activePostId) {
+        requireAdminAuth(() => {
+          if (confirm('Are you sure you want to delete this article?')) {
+            StorageManager.deletePost(activePostId);
+            showToast('Article deleted', 'error');
+            switchViewSection('all');
+          }
+        });
       }
     });
 
@@ -506,8 +567,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    openEditorBtn.addEventListener('click', () => openEditor());
-    document.getElementById('emptyStateCreateBtn').addEventListener('click', () => openEditor());
+    // Guard + New Post Buttons with Admin Passcode
+    openEditorBtn.addEventListener('click', () => {
+      requireAdminAuth(() => openEditor());
+    });
+
+    document.getElementById('emptyStateCreateBtn').addEventListener('click', () => {
+      requireAdminAuth(() => openEditor());
+    });
+
     closeEditorBtn.addEventListener('click', closeEditor);
     cancelEditorBtn.addEventListener('click', closeEditor);
 
