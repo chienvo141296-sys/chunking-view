@@ -1,15 +1,11 @@
-// Main Application Controller for Chunking Blog
+// Main Application Controller for Chunking view Blog
 
 document.addEventListener('DOMContentLoaded', () => {
   // State
   let activeTag = null;
   let searchQuery = '';
   let activePostId = null;
-  let pendingAdminAction = null; // callback action after admin unlock
   let isDarkMode = document.documentElement.classList.contains('dark');
-
-  const ADMIN_PASSCODE_KEY = 'chunking_admin_passcode_v1';
-  const DEFAULT_PASSCODE = '150125';
 
   // DOM Elements
   const postsGrid = document.getElementById('postsGrid');
@@ -33,12 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // i18n & Language Switcher
   const langToggleBtn = document.getElementById('langToggleBtn');
   const langCurrentText = document.getElementById('langCurrentText');
-
-  // Admin Auth Modal Elements
-  const adminAuthModal = document.getElementById('adminAuthModal');
-  const closeAdminAuthBtn = document.getElementById('closeAdminAuthBtn');
-  const adminAuthForm = document.getElementById('adminAuthForm');
-  const adminPasscodeInput = document.getElementById('adminPasscodeInput');
 
   // Editor Modal Elements
   const editorModal = document.getElementById('editorModal');
@@ -95,40 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     updateBookmarkBadge();
     if (window.lucide) lucide.createIcons();
-
-    // Trigger Cloud Realtime DB Sync across all devices (mobile phones & PCs)
-    StorageManager.fetchCloudPosts(() => {
-      renderMainFeed();
-      updateBookmarkBadge();
-    });
-
-    // Live Cloud DB Sync: Automatically receive posts from other authors every 30 seconds
-    setInterval(() => {
-      StorageManager.fetchCloudPosts(() => {
-        renderMainFeed();
-        updateBookmarkBadge();
-      });
-    }, 30000);
-  }
-
-  // --- ADMIN AUTHENTICATION GUARD ---
-  function requireAdminAuth(onSuccessCallback) {
-    const isUnlocked = sessionStorage.getItem('chunking_admin_unlocked') === 'true';
-    if (isUnlocked) {
-      onSuccessCallback();
-      return;
-    }
-
-    pendingAdminAction = onSuccessCallback;
-    adminPasscodeInput.value = '';
-    adminAuthModal.classList.remove('hidden');
-    adminPasscodeInput.focus();
-    if (window.lucide) lucide.createIcons();
-  }
-
-  function closeAdminAuth() {
-    adminAuthModal.classList.add('hidden');
-    pendingAdminAction = null;
   }
 
   // --- i18n DYNAMIC UI UPDATER ---
@@ -445,30 +401,6 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast(next === 'vi' ? 'Đã chuyển sang Tiếng Việt!' : 'Switched to English!', 'info');
     });
 
-    // Admin Security Verification Form Listener
-    closeAdminAuthBtn.addEventListener('click', closeAdminAuth);
-
-    adminAuthForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const entered = adminPasscodeInput.value.trim();
-      const expected = localStorage.getItem(ADMIN_PASSCODE_KEY) || DEFAULT_PASSCODE;
-
-      if (entered === expected) {
-        sessionStorage.setItem('chunking_admin_unlocked', 'true');
-        showToast(i18n.t('adminUnlocked'), 'success');
-        adminAuthModal.classList.add('hidden');
-        if (pendingAdminAction) {
-          const action = pendingAdminAction;
-          pendingAdminAction = null;
-          action();
-        }
-      } else {
-        showToast(i18n.t('adminWrongPasscode'), 'error');
-        adminPasscodeInput.value = '';
-        adminPasscodeInput.focus();
-      }
-    });
-
     navBrand.addEventListener('click', () => {
       activeTag = null;
       searchQuery = '';
@@ -553,22 +485,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Guard Edit & Delete buttons with Admin Passcode
     detailEditBtn.addEventListener('click', () => {
-      if (activePostId) {
-        requireAdminAuth(() => openEditor(activePostId));
-      }
+      if (activePostId) openEditor(activePostId);
     });
 
     detailDeleteBtn.addEventListener('click', () => {
-      if (activePostId) {
-        requireAdminAuth(() => {
-          if (confirm('Are you sure you want to delete this article?')) {
-            StorageManager.deletePost(activePostId);
-            showToast('Article deleted', 'error');
-            switchViewSection('all');
-          }
-        });
+      if (activePostId && confirm('Are you sure you want to delete this article?')) {
+        StorageManager.deletePost(activePostId);
+        showToast('Article deleted', 'error');
+        switchViewSection('all');
       }
     });
 
@@ -581,15 +506,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Guard + New Post Buttons with Admin Passcode
-    openEditorBtn.addEventListener('click', () => {
-      requireAdminAuth(() => openEditor());
-    });
-
-    document.getElementById('emptyStateCreateBtn').addEventListener('click', () => {
-      requireAdminAuth(() => openEditor());
-    });
-
+    openEditorBtn.addEventListener('click', () => openEditor());
+    document.getElementById('emptyStateCreateBtn').addEventListener('click', () => openEditor());
     closeEditorBtn.addEventListener('click', closeEditor);
     cancelEditorBtn.addEventListener('click', closeEditor);
 
@@ -611,9 +529,7 @@ document.addEventListener('DOMContentLoaded', () => {
       StorageManager.exportPostMD(tempPost);
     });
 
-    function handleSavePost(e) {
-      if (e) e.preventDefault();
-
+    savePostBtn.addEventListener('click', () => {
       if (!inputTitle.value.trim()) {
         alert('Please enter a post title');
         return;
@@ -624,34 +540,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const postData = {
-        id: inputId.value.trim() ? inputId.value.trim() : undefined,
+        id: inputId.value || undefined,
         title: inputTitle.value.trim(),
         category: 'Personal Learning',
         excerpt: inputExcerpt.value.trim(),
         tags: inputTags.value.split(',').map(t => t.trim()).filter(Boolean),
-        cover: inputCover.value.trim() || PRESET_COVERS[Math.floor(Math.random() * PRESET_COVERS.length)],
+        cover: inputCover.value.trim() || PRESET_COVERS[0],
         content: inputContent.value
       };
 
-      StorageManager.upsertPost(postData);
+      const updatedPosts = StorageManager.upsertPost(postData);
       closeEditor();
-      renderMainFeed();
 
       if (typeof confetti !== 'undefined') {
         confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
       }
 
-      showToast('Bài viết đã được xuất bản & đồng bộ thành công!', 'success');
+      showToast('Article published successfully!', 'success');
 
       if (activePostId && activePostId === postData.id) {
         openArticleDetail(postData.id);
       } else {
         switchViewSection('all');
       }
-    }
-
-    savePostBtn.addEventListener('click', handleSavePost);
-    postForm.addEventListener('submit', handleSavePost);
+    });
 
     themeToggleBtn.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');

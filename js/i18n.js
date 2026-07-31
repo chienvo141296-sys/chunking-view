@@ -76,15 +76,7 @@ const TRANSLATIONS = {
     catLife: "💡 View of Life",
 
     footerText: "Chunking — Built for Personal Growth, Digital Gardening & Life Philosophy.",
-    footerNote: "All posts stored locally in browser storage with instant Markdown export capability.",
-
-    adminModalTitle: "Admin Security Verification",
-    adminModalDesc: "Only authorized authors with the secret passcode can post or edit entries on Chunking.",
-    adminPasscodePlaceholder: "Enter Admin Passcode...",
-    adminUnlockBtn: "Verify & Unlock Studio",
-    adminChangePasscodeBtn: "Change Passcode",
-    adminWrongPasscode: "Incorrect Admin Passcode!",
-    adminUnlocked: "Admin access granted successfully!"
+    footerNote: "All posts stored locally in browser storage with instant Markdown export capability."
   },
   
   vi: {
@@ -162,15 +154,7 @@ const TRANSLATIONS = {
     catLife: "💡 Quan điểm Sống",
 
     footerText: "Chunking — Được xây dựng cho việc Phát triển Bản thân & Triết lý Sống.",
-    footerNote: "Tất cả bài viết được lưu trữ an toàn trong trình duyệt hỗ trợ xuất Markdown nhanh chóng.",
-
-    adminModalTitle: "Xác thực Quyền Đăng bài Admin",
-    adminModalDesc: "Chỉ những tác giả được cấp mật khẩu mới có quyền tạo, chỉnh sửa hoặc xóa bài viết.",
-    adminPasscodePlaceholder: "Nhập mật khẩu Admin...",
-    adminUnlockBtn: "Xác nhận & Mở khóa Soạn thảo",
-    adminChangePasscodeBtn: "Đổi Mật khẩu Admin",
-    adminWrongPasscode: "Mật khẩu Admin không chính xác!",
-    adminUnlocked: "Đã xác thực quyền Admin thành công!"
+    footerNote: "Tất cả bài viết được lưu trữ an toàn trong trình duyệt hỗ trợ xuất Markdown nhanh chóng."
   }
 };
 
