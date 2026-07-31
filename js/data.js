@@ -1,15 +1,39 @@
 // Seed Data for Chunking Blog
 
 const PRESET_COVERS = [
-  'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80',
-  'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80'
+  "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80"
 ];
 
 const INITIAL_POSTS = [
+  {
+    "id": "post-1785488263567",
+    "title": "testtttt",
+    "category": "Personal Learning",
+    "excerpt": "qưeqweqw",
+    "content": "qưeqweqw",
+    "tags": [],
+    "cover": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80",
+    "date": "2026-07-31",
+    "readTime": "1 min read",
+    "bookmarked": false
+  },
+  {
+    "id": "post-1785464854577",
+    "title": "Test",
+    "category": "Personal Learning",
+    "excerpt": "Test",
+    "content": "Test ",
+    "tags": [],
+    "cover": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
+    "date": "2026-07-31",
+    "readTime": "1 min read",
+    "bookmarked": false
+  },
   {
     "id": "post-1785465074696",
     "title": "Tesyt",
@@ -23,13 +47,13 @@ const INITIAL_POSTS = [
     "bookmarked": false
   },
   {
-    "id": "post-1785464854577",
-    "title": "Test",
+    "id": "post-1785467455156",
+    "title": "ospfv2 (ipv4) and ospfv3 (ipv6)",
     "category": "Personal Learning",
-    "excerpt": "Test",
-    "content": "Test ",
+    "excerpt": "test",
+    "content": "test",
     "tags": [],
-    "cover": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80",
+    "cover": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80",
     "date": "2026-07-31",
     "readTime": "1 min read",
     "bookmarked": false
