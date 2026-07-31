@@ -101,6 +101,14 @@ document.addEventListener('DOMContentLoaded', () => {
       renderMainFeed();
       updateBookmarkBadge();
     });
+
+    // Live Cloud DB Sync: Automatically receive posts from other authors every 30 seconds
+    setInterval(() => {
+      StorageManager.fetchCloudPosts(() => {
+        renderMainFeed();
+        updateBookmarkBadge();
+      });
+    }, 30000);
   }
 
   // --- ADMIN AUTHENTICATION GUARD ---
