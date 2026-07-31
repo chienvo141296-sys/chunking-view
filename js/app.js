@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let isDarkMode = document.documentElement.classList.contains('dark');
 
   const ADMIN_PASSCODE_KEY = 'chunking_admin_passcode_v1';
-  const DEFAULT_PASSCODE = '123456';
+  const DEFAULT_PASSCODE = '150125';
 
   // DOM Elements
   const postsGrid = document.getElementById('postsGrid');

@@ -80,7 +80,7 @@ const TRANSLATIONS = {
 
     adminModalTitle: "Admin Security Verification",
     adminModalDesc: "Only authorized authors with the secret passcode can post or edit entries on Chunking.",
-    adminPasscodePlaceholder: "Enter Admin Passcode (Default: 123456)...",
+    adminPasscodePlaceholder: "Enter Admin Passcode...",
     adminUnlockBtn: "Verify & Unlock Studio",
     adminChangePasscodeBtn: "Change Passcode",
     adminWrongPasscode: "Incorrect Admin Passcode!",
@@ -166,7 +166,7 @@ const TRANSLATIONS = {
 
     adminModalTitle: "Xác thực Quyền Đăng bài Admin",
     adminModalDesc: "Chỉ những tác giả được cấp mật khẩu mới có quyền tạo, chỉnh sửa hoặc xóa bài viết.",
-    adminPasscodePlaceholder: "Nhập mật khẩu Admin (Mặc định: 123456)...",
+    adminPasscodePlaceholder: "Nhập mật khẩu Admin...",
     adminUnlockBtn: "Xác nhận & Mở khóa Soạn thảo",
     adminChangePasscodeBtn: "Đổi Mật khẩu Admin",
     adminWrongPasscode: "Mật khẩu Admin không chính xác!",
