@@ -7,7 +7,6 @@ const STORAGE_KEY_PROFILE = 'chunking_view_profile_v2';
 // Obfuscated GitHub Token Parts to prevent auto-revocation by GitHub Security Scanner
 const GITHUB_OWNER = 'chienvo141296-sys';
 const GITHUB_REPO = 'chunking-view';
-const G_TOK = ['gho_', 'e3HaxDH', 'ZyFeQnZ', 'HuakDUL', 'F5pfLYa', 'tc4V5wRf'].join('');
 
 const DEFAULT_PROFILE = {
   name: "Software Engineer",
@@ -117,16 +116,23 @@ class StorageManager {
   // --- AUTOMATIC GITHUB API CLOUD SYNC ---
   static async syncToGitHub(postData) {
     try {
+      const token = localStorage.getItem('chungking_github_pat');
+      if (!token) {
+        console.warn('No GitHub token found. Post is saved locally but not synced to the cloud.');
+        return;
+      }
+
       const path = 'js/data.js';
       const apiUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`;
 
       // 1. Fetch current file info & SHA from GitHub API
       const res = await fetch(apiUrl, {
-        headers: { 'Authorization': `token ${G_TOK}` }
+        headers: { 'Authorization': `token ${token}` }
       });
 
       if (!res.ok) {
         console.warn('GitHub API fetch returned status:', res.status);
+        alert('Lỗi đồng bộ: GitHub Token của bạn không hợp lệ hoặc hết hạn.');
         return;
       }
 
@@ -143,7 +149,7 @@ class StorageManager {
       const putRes = await fetch(apiUrl, {
         method: 'PUT',
         headers: {
-          'Authorization': `token ${G_TOK}`,
+          'Authorization': `token ${token}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -155,8 +161,10 @@ class StorageManager {
 
       if (putRes.ok) {
         console.log('Successfully synced post to GitHub cloud!');
+        alert('Đã đồng bộ bài viết lên máy chủ GitHub thành công! Bài viết sẽ xuất hiện trên mọi thiết bị sau vài phút.');
       } else {
         console.warn('GitHub API commit returned status:', putRes.status);
+        alert('Đồng bộ thất bại: Không thể ghi file lên GitHub. Kiểm tra lại quyền của Token.');
       }
     } catch (e) {
       console.error('GitHub API Cloud Sync error:', e);

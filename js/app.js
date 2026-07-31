@@ -84,17 +84,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- SECURITY AUTHENTICATION CHECK ---
   function checkAdminAuth() {
     if (sessionStorage.getItem('chungking_auth') === 'true') {
-      return true;
+      return checkGitHubToken();
     }
     const input = prompt('🔐 Nhập mật khẩu để mở khóa quyền đăng bài (Password Required):');
     if (input === ADMIN_PASSWORD) {
       sessionStorage.setItem('chungking_auth', 'true');
       showToast('Xác thực mật khẩu thành công! Bạn có thể đăng bài.', 'success');
-      return true;
+      return checkGitHubToken();
     } else if (input !== null) {
       showToast('Mật khẩu không chính xác! Không thể đăng bài.', 'error');
     }
     return false;
+  }
+
+  function checkGitHubToken() {
+    let token = localStorage.getItem('chungking_github_pat');
+    if (!token) {
+      token = prompt('☁️ Để đồng bộ bài viết lên tất cả thiết bị, hãy nhập GitHub Personal Access Token (PAT) của bạn:\n\n* Tạo mã PAT tại github.com/settings/tokens (classic, tick chọn repo).\n* Token chỉ được lưu ở thiết bị của bạn.\n\nNhập token:');
+      if (token && token.trim().startsWith('gh')) {
+        localStorage.setItem('chungking_github_pat', token.trim());
+        showToast('Đã lưu GitHub Token. Sẵn sàng đồng bộ đa thiết bị!', 'success');
+      } else if (token !== null) {
+        alert('Cảnh báo: Không có Token hợp lệ. Bài viết sẽ chỉ được lưu cục bộ trên máy này, sẽ KHÔNG đồng bộ được sang thiết bị khác.');
+      }
+    }
+    return true;
   }
 
   // Initialize Application
