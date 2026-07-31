@@ -611,7 +611,9 @@ document.addEventListener('DOMContentLoaded', () => {
       StorageManager.exportPostMD(tempPost);
     });
 
-    savePostBtn.addEventListener('click', () => {
+    function handleSavePost(e) {
+      if (e) e.preventDefault();
+
       if (!inputTitle.value.trim()) {
         alert('Please enter a post title');
         return;
@@ -622,30 +624,34 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const postData = {
-        id: inputId.value || undefined,
+        id: inputId.value.trim() ? inputId.value.trim() : undefined,
         title: inputTitle.value.trim(),
         category: 'Personal Learning',
         excerpt: inputExcerpt.value.trim(),
         tags: inputTags.value.split(',').map(t => t.trim()).filter(Boolean),
-        cover: inputCover.value.trim() || PRESET_COVERS[0],
+        cover: inputCover.value.trim() || PRESET_COVERS[Math.floor(Math.random() * PRESET_COVERS.length)],
         content: inputContent.value
       };
 
       StorageManager.upsertPost(postData);
       closeEditor();
+      renderMainFeed();
 
       if (typeof confetti !== 'undefined') {
         confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
       }
 
-      showToast('Bài viết đã được đồng bộ toàn cầu! (Điện thoại & PC khác sẽ xem được ngay)', 'success');
+      showToast('Bài viết đã được xuất bản & đồng bộ thành công!', 'success');
 
       if (activePostId && activePostId === postData.id) {
         openArticleDetail(postData.id);
       } else {
         switchViewSection('all');
       }
-    });
+    }
+
+    savePostBtn.addEventListener('click', handleSavePost);
+    postForm.addEventListener('submit', handleSavePost);
 
     themeToggleBtn.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');

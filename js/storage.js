@@ -137,13 +137,18 @@ class StorageManager {
 
   static upsertPost(postData) {
     const posts = this.getPosts();
-    const existingIndex = posts.findIndex(p => p.id === postData.id || p.title === postData.title);
+    const targetId = (postData.id && postData.id.trim()) ? postData.id.trim() : `post-${Date.now()}`;
+    const existingIndex = posts.findIndex(p => p && p.id === targetId);
 
     if (existingIndex >= 0) {
-      posts[existingIndex] = { ...posts[existingIndex], ...postData };
+      posts[existingIndex] = { 
+        ...posts[existingIndex], 
+        ...postData, 
+        id: targetId 
+      };
     } else {
       const newPost = {
-        id: postData.id || `post-${Date.now()}`,
+        id: targetId,
         title: postData.title,
         category: postData.category || 'Personal Learning',
         excerpt: postData.excerpt || this.generateExcerpt(postData.content),
