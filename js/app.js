@@ -620,6 +620,19 @@ document.addEventListener('DOMContentLoaded', () => {
       const updatedPosts = StorageManager.upsertPost(postData);
       closeEditor();
 
+      // Auto-Sync to live web (GitHub Pages) so mobile phones see the post globally!
+      fetch('/api/sync-posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedPosts)
+      }).then(res => res.json()).then(data => {
+        if (data && data.success) {
+          showToast('Bài viết đã được đồng bộ toàn cầu! (Tự động xuất hiện trên Điện thoại sau ~30s)', 'success');
+        }
+      }).catch(err => {
+        console.log('Local dev server sync inactive', err);
+      });
+
       if (typeof confetti !== 'undefined') {
         confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
       }
