@@ -403,16 +403,25 @@ document.addEventListener('DOMContentLoaded', () => {
       editorModalTitle.innerText = i18n.t('editorTitleNew');
       postForm.reset();
       inputId.value = '';
+      inputTitle.value = '';
+      inputExcerpt.value = '';
+      inputTags.value = '';
       inputContent.value = '';
       inputCover.value = PRESET_COVERS[Math.floor(Math.random() * PRESET_COVERS.length)];
     }
 
     switchEditorTab('write');
     editorModal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => {
+      inputTitle.focus();
+    }, 150);
   }
 
   function closeEditor() {
     editorModal.classList.add('hidden');
+    document.body.style.overflow = '';
   }
 
   function switchEditorTab(tab) {
@@ -457,10 +466,15 @@ document.addEventListener('DOMContentLoaded', () => {
         sessionStorage.setItem('chunking_admin_unlocked', 'true');
         showToast(i18n.t('adminUnlocked'), 'success');
         adminAuthModal.classList.add('hidden');
-        if (pendingAdminAction) {
-          const action = pendingAdminAction;
-          pendingAdminAction = null;
-          action();
+        adminPasscodeInput.blur();
+
+        const action = pendingAdminAction;
+        pendingAdminAction = null;
+
+        if (action) {
+          setTimeout(() => {
+            action();
+          }, 100);
         }
       } else {
         showToast(i18n.t('adminWrongPasscode'), 'error');
