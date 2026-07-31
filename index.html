@@ -312,33 +312,22 @@
           </button>
         </div>
 
-        <!-- STEP 1: Passcode Authentication View (If not unlocked yet) -->
-        <div id="editorAuthStep" class="hidden p-8 flex flex-col items-center justify-center text-center space-y-5 max-w-md mx-auto my-auto">
-          <div class="w-14 h-14 bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 rounded-2xl flex items-center justify-center shadow-inner">
-            <i data-lucide="shield-lock" class="w-7 h-7"></i>
-          </div>
-          <div>
-            <h4 class="font-bold text-base text-slate-900 dark:text-white" data-i18n="adminModalTitle">Admin Security Verification</h4>
-            <p data-i18n="adminModalDesc" class="text-xs text-slate-500 dark:text-slate-400 mt-1">Enter passcode 150125 to unlock the post editor studio.</p>
-          </div>
-
-          <form id="adminAuthFormInline" class="w-full space-y-3">
-            <input type="password" id="adminPasscodeInputInline" required placeholder="Enter Admin Passcode..." data-i18n="adminPasscodePlaceholder" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm text-center tracking-widest font-mono">
-            <button type="submit" class="w-full py-3 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold text-xs rounded-xl shadow-md transition flex items-center justify-center gap-1.5">
-              <i data-lucide="key-round" class="w-4 h-4"></i> <span data-i18n="adminUnlockBtn">Verify & Unlock Studio</span>
-            </button>
-          </form>
-        </div>
-
-        <!-- STEP 2: Post Editor Body & Form (When Unlocked) -->
+        <!-- Post Editor Body & Form -->
         <form id="postForm" class="flex flex-col flex-grow overflow-hidden">
           <div class="p-6 overflow-y-auto flex-grow space-y-6">
             <input type="hidden" id="postId" value="">
 
-            <!-- Row 1: Title (Full Width) -->
-            <div>
-              <label data-i18n="labelTitle" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Article Title *</label>
-              <input type="text" id="inputTitle" required placeholder="e.g. Mastered Event-Driven Architecture & Async Processing" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+            <!-- Row 1: Title & Admin Passcode -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div class="sm:col-span-2">
+                <label data-i18n="labelTitle" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Article Title *</label>
+                <input type="text" id="inputTitle" required placeholder="e.g. Mastered Event-Driven Architecture & Async Processing" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+              </div>
+
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 mb-2">Admin Passcode *</label>
+                <input type="password" id="inputPasscode" required value="150125" placeholder="150125" class="w-full px-4 py-3 bg-indigo-50/50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800/80 rounded-xl text-slate-900 dark:text-white font-mono text-sm tracking-widest text-center focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
             </div>
 
             <!-- Row 2: Subtitle / Summary & Tags -->
@@ -423,10 +412,10 @@ const learn = () => 'Continuous Improvement';
   </div>
 
   <!-- JavaScript Modules -->
-  <script src="js/data.js?v=7.0"></script>
-  <script src="js/storage.js?v=7.0"></script>
-  <script src="js/i18n.js?v=7.0"></script>
-  <script src="js/markdown.js?v=7.0"></script>
-  <script src="js/app.js?v=7.0"></script>
+  <script src="js/data.js?v=8.0"></script>
+  <script src="js/storage.js?v=8.0"></script>
+  <script src="js/i18n.js?v=8.0"></script>
+  <script src="js/markdown.js?v=8.0"></script>
+  <script src="js/app.js?v=8.0"></script>
 </body>
 </html>

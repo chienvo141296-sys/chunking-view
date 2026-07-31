@@ -48,12 +48,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const editorModalTitle = document.getElementById('editorModalTitle');
   const closeEditorBtn = document.getElementById('closeEditorBtn');
   const cancelEditorBtn = document.getElementById('cancelEditorBtn');
-  const editorAuthStep = document.getElementById('editorAuthStep');
-  const adminAuthFormInline = document.getElementById('adminAuthFormInline');
-  const adminPasscodeInputInline = document.getElementById('adminPasscodeInputInline');
   const postForm = document.getElementById('postForm');
   const inputId = document.getElementById('postId');
   const inputTitle = document.getElementById('inputTitle');
+  const inputPasscode = document.getElementById('inputPasscode');
   const inputExcerpt = document.getElementById('inputExcerpt');
   const inputTags = document.getElementById('inputTags');
   const inputCover = document.getElementById('inputCover');
@@ -70,7 +68,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Admin Security Configuration
   const DEFAULT_PASSCODE = '150125';
-  const ADMIN_PASSCODE_KEY = 'chunking_admin_passcode';
 
   // Application State
   let activeView = 'all'; // 'all', 'bookmarked', 'tag'
@@ -311,10 +308,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- UNIFIED SINGLE-MODAL POST EDITOR LOGIC ---
+  // --- POST EDITOR STUDIO (DIRECT ACCESSIBLE) ---
   function openEditor(postId = null) {
-    const isUnlocked = sessionStorage.getItem('chunking_admin_unlocked') === 'true';
-
     if (postId) {
       const post = StorageManager.getPostById(postId);
       if (post) {
@@ -334,28 +329,18 @@ document.addEventListener('DOMContentLoaded', () => {
       inputExcerpt.value = '';
       inputTags.value = '';
       inputContent.value = '';
+      if (inputPasscode) inputPasscode.value = DEFAULT_PASSCODE;
       inputCover.value = PRESET_COVERS[Math.floor(Math.random() * PRESET_COVERS.length)];
     }
 
-    if (isUnlocked) {
-      if (editorAuthStep) editorAuthStep.classList.add('hidden');
-      if (postForm) postForm.classList.remove('hidden');
-      switchEditorTab('write');
-      setTimeout(() => {
-        inputTitle.focus();
-      }, 100);
-    } else {
-      if (editorAuthStep) editorAuthStep.classList.remove('hidden');
-      if (postForm) postForm.classList.add('hidden');
-      if (adminPasscodeInputInline) {
-        adminPasscodeInputInline.value = '';
-        setTimeout(() => adminPasscodeInputInline.focus(), 100);
-      }
-    }
-
+    switchEditorTab('write');
     editorModal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
     if (window.lucide) lucide.createIcons();
+
+    setTimeout(() => {
+      inputTitle.focus();
+    }, 100);
   }
 
   function closeEditor() {
@@ -394,33 +379,6 @@ document.addEventListener('DOMContentLoaded', () => {
       showToast(next === 'vi' ? 'Đã chuyển sang Tiếng Việt!' : 'Switched to English!', 'info');
     });
 
-    // Inline Passcode Unlock Listener
-    if (adminAuthFormInline) {
-      adminAuthFormInline.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const entered = adminPasscodeInputInline.value.trim();
-        const expected = localStorage.getItem(ADMIN_PASSCODE_KEY) || DEFAULT_PASSCODE;
-
-        if (entered === expected) {
-          sessionStorage.setItem('chunking_admin_unlocked', 'true');
-          showToast(i18n.t('adminUnlocked'), 'success');
-          
-          // Switch view inside the same modal
-          editorAuthStep.classList.add('hidden');
-          postForm.classList.remove('hidden');
-          switchEditorTab('write');
-
-          setTimeout(() => {
-            inputTitle.focus();
-          }, 100);
-        } else {
-          showToast(i18n.t('adminWrongPasscode'), 'error');
-          adminPasscodeInputInline.value = '';
-          adminPasscodeInputInline.focus();
-        }
-      });
-    }
-
     // Search Listener
     if (searchInput) {
       searchInput.addEventListener('input', () => {
@@ -449,7 +407,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Guard Edit & Delete buttons with Admin Passcode
     detailEditBtn.addEventListener('click', () => {
       if (activePostId) {
         openEditor(activePostId);
@@ -458,12 +415,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     detailDeleteBtn.addEventListener('click', () => {
       if (activePostId) {
-        const isUnlocked = sessionStorage.getItem('chunking_admin_unlocked') === 'true';
-        if (!isUnlocked) {
-          openEditor();
-          return;
-        }
-
         if (confirm('Are you sure you want to delete this article?')) {
           StorageManager.deletePost(activePostId);
           showToast('Article deleted', 'error');
@@ -516,6 +467,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function handleSavePost(e) {
       if (e) e.preventDefault();
+
+      const enteredPasscode = inputPasscode ? inputPasscode.value.trim() : '';
+      if (enteredPasscode !== DEFAULT_PASSCODE) {
+        showToast(i18n.t('adminWrongPasscode'), 'error');
+        if (inputPasscode) {
+          inputPasscode.value = '';
+          inputPasscode.focus();
+        }
+        return;
+      }
 
       if (!inputTitle.value.trim()) {
         alert('Please enter a post title');
