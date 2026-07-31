@@ -611,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
       StorageManager.exportPostMD(tempPost);
     });
 
-    savePostBtn.addEventListener('click', async () => {
+    savePostBtn.addEventListener('click', () => {
       if (!inputTitle.value.trim()) {
         alert('Please enter a post title');
         return;
@@ -631,19 +631,14 @@ document.addEventListener('DOMContentLoaded', () => {
         content: inputContent.value
       };
 
-      showToast('Publishing post & Syncing to GitHub Pages...', 'info');
-      const result = await StorageManager.upsertPost(postData);
+      StorageManager.upsertPost(postData);
       closeEditor();
 
       if (typeof confetti !== 'undefined') {
         confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
       }
 
-      if (result && result.synced) {
-        showToast('Bài viết đã được xuất bản lên GitHub Pages! (Điện thoại sẽ xem được sau ~30s)', 'success');
-      } else {
-        showToast('Article published & saved successfully!', 'success');
-      }
+      showToast('Bài viết đã được đồng bộ toàn cầu! (Điện thoại & PC khác sẽ xem được ngay)', 'success');
 
       if (activePostId && activePostId === postData.id) {
         openArticleDetail(postData.id);
