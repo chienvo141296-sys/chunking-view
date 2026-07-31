@@ -286,10 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const giscusScript = document.createElement('script');
     giscusScript.src = 'https://giscus.app/client.js';
-    giscusScript.setAttribute('data-repo', 'chunkingview/chunking-view');
-    giscusScript.setAttribute('data-repo-id', 'R_kgDOMxxx');
-    giscusScript.setAttribute('data-category', 'General');
-    giscusScript.setAttribute('data-category-id', 'DIC_kwDOMxxx');
+    giscusScript.setAttribute('data-repo', 'chienvo141296-sys/chunking-view');
     giscusScript.setAttribute('data-mapping', 'title');
     giscusScript.setAttribute('data-term', termTitle);
     giscusScript.setAttribute('data-strict', '0');
@@ -529,8 +526,7 @@ document.addEventListener('DOMContentLoaded', () => {
       StorageManager.exportPostMD(tempPost);
     });
 
-    postForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+    savePostBtn.addEventListener('click', () => {
       if (!inputTitle.value.trim()) {
         alert('Please enter a post title');
         return;
@@ -550,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
         content: inputContent.value
       };
 
-      StorageManager.upsertPost(postData);
+      const updatedPosts = StorageManager.upsertPost(postData);
       closeEditor();
 
       if (typeof confetti !== 'undefined') {
@@ -558,8 +554,12 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       showToast('Article published successfully!', 'success');
-      switchViewSection('all');
-      renderMainFeed();
+
+      if (activePostId && activePostId === postData.id) {
+        openArticleDetail(postData.id);
+      } else {
+        switchViewSection('all');
+      }
     });
 
     themeToggleBtn.addEventListener('click', () => {

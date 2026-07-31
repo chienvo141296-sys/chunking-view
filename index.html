@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chunking — Personal Learning & Engineering Path</title>
-  <meta name="description" content="Chunking — A personal digital garden and blog tracking my software engineering path, personal learning process, and view of life.">
+  <title>Chunking view — Personal Learning & Engineering Path</title>
+  <meta name="description" content="Chunking view — A personal digital garden and blog tracking my software engineering path, personal learning process, and view of life.">
   
   <!-- Google Fonts: Be Vietnam Pro (Best for Vietnamese) & Plus Jakarta Sans & Fira Code -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,7 +70,7 @@
 
   <div class="relative z-10 flex flex-col min-h-screen">
     
-    <!-- Clean Minimal Header (Chunking Logo + Action Controls) -->
+    <!-- Clean Minimal Header (Chunking view Logo + Action Controls) -->
     <header class="sticky top-0 z-40 backdrop-blur-xl bg-white/90 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800/80 transition-colors">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16 sm:h-20">
@@ -84,7 +84,7 @@
             </div>
             <div>
               <span class="font-display text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-slate-900 via-indigo-950 to-indigo-700 dark:from-white dark:via-slate-200 dark:to-indigo-300 bg-clip-text text-transparent">
-                Chunking
+                Chunking view
               </span>
             </div>
           </div>
@@ -373,6 +373,11 @@ const learn = () => 'Continuous Improvement';
             <div id="previewPane" class="hidden min-h-[300px] p-6 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl overflow-y-auto max-h-[400px]">
               <div id="livePreviewOutput" class="prose dark:prose-invert max-w-none text-sm">
                 <p class="text-slate-400 italic">Start typing content to see live markdown rendering...</p>
+              </div>
+            </div>
+          </div>
+        </form>
+
         <!-- Modal Footer -->
         <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex items-center justify-between">
           <button type="button" id="downloadMdBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition flex items-center gap-1.5">
@@ -383,12 +388,11 @@ const learn = () => 'Continuous Improvement';
             <button type="button" id="cancelEditorBtn" class="px-5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium transition" data-i18n="btnCancel">
               Cancel
             </button>
-            <button type="submit" id="savePostBtn" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+            <button type="button" id="savePostBtn" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
               <i data-lucide="send" class="w-4 h-4"></i> <span data-i18n="btnPublish">Publish Post</span>
             </button>
           </div>
         </div>
-        </form>
 
       </div>
     </div>

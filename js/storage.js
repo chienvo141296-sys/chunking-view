@@ -7,7 +7,7 @@ const STORAGE_KEY_PROFILE = 'chunking_view_profile_v2';
 const DEFAULT_PROFILE = {
   name: "Software Engineer",
   role: "Full-Stack & Systems Architecture",
-  bio: "Welcome to Chunking! Documenting my software engineering path, mental models, and personal life reflections. Learning in public every single day.",
+  bio: "Welcome to Chunking view! Documenting my software engineering path, mental models, and personal life reflections. Learning in public every single day.",
   location: "Remote / Global",
   avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
   github: "https://github.com",

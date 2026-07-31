@@ -12,7 +12,7 @@ const TRANSLATIONS = {
     navStats: "Stats",
     newPost: "New Post",
     
-    heroBadge: "Chunking • Personal Learning Journal",
+    heroBadge: "Chunking view • Personal Learning Journal",
     heroTitlePrefix: "Chunking Knowledge:",
     heroTitleCode: "Code",
     heroTitleMindset: "Mindset",
@@ -75,7 +75,7 @@ const TRANSLATIONS = {
     catLearning: "📚 Personal Learning",
     catLife: "💡 View of Life",
 
-    footerText: "Chunking — Built for Personal Growth, Digital Gardening & Life Philosophy.",
+    footerText: "Chunking view — Built for Personal Growth, Digital Gardening & Life Philosophy.",
     footerNote: "All posts stored locally in browser storage with instant Markdown export capability."
   },
   
@@ -90,7 +90,7 @@ const TRANSLATIONS = {
     navStats: "Thống kê",
     newPost: "Bài viết Mới",
     
-    heroBadge: "Chunking • Nhật ký Học tập & Lập trình",
+    heroBadge: "Chunking view • Nhật ký Học tập & Lập trình",
     heroTitlePrefix: "Hệ thống Hóa Kiến thức:",
     heroTitleCode: "Lập trình",
     heroTitleMindset: "Tư duy",
@@ -153,7 +153,7 @@ const TRANSLATIONS = {
     catLearning: "📚 Học tập Cá nhân",
     catLife: "💡 Quan điểm Sống",
 
-    footerText: "Chunking — Được xây dựng cho việc Phát triển Bản thân & Triết lý Sống.",
+    footerText: "Chunking view — Được xây dựng cho việc Phát triển Bản thân & Triết lý Sống.",
     footerNote: "Tất cả bài viết được lưu trữ an toàn trong trình duyệt hỗ trợ xuất Markdown nhanh chóng."
   }
 };
