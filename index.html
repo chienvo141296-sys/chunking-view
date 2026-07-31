@@ -341,87 +341,89 @@
           </button>
         </div>
 
-        <!-- Modal Body -->
-        <form id="postForm" class="p-6 overflow-y-auto flex-grow space-y-6">
-          <input type="hidden" id="postId" value="">
+        <!-- Modal Body & Form -->
+        <form id="postForm" class="flex flex-col flex-grow overflow-hidden">
+          <div class="p-6 overflow-y-auto flex-grow space-y-6">
+            <input type="hidden" id="postId" value="">
 
-          <!-- Row 1: Title (Full Width) -->
-          <div>
-            <label data-i18n="labelTitle" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Article Title *</label>
-            <input type="text" id="inputTitle" required placeholder="e.g. Mastered Event-Driven Architecture & Async Processing" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-          </div>
-
-          <!-- Row 2: Subtitle / Summary & Tags -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- Row 1: Title (Full Width) -->
             <div>
-              <label data-i18n="labelExcerpt" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Short Excerpt / Summary</label>
-              <input type="text" id="inputExcerpt" placeholder="Brief 1-2 sentence overview for post cards..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+              <label data-i18n="labelTitle" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Article Title *</label>
+              <input type="text" id="inputTitle" required placeholder="e.g. Mastered Event-Driven Architecture & Async Processing" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
             </div>
+
+            <!-- Row 2: Subtitle / Summary & Tags -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label data-i18n="labelExcerpt" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Short Excerpt / Summary</label>
+                <input type="text" id="inputExcerpt" placeholder="Brief 1-2 sentence overview for post cards..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+              </div>
+              <div>
+                <label data-i18n="labelTags" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Tags (Comma-separated)</label>
+                <input type="text" id="inputTags" placeholder="e.g. Architecture, React, SystemDesign, Mindset" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+              </div>
+            </div>
+
+            <!-- Row 3: Cover Image URL or Preset Gradient -->
             <div>
-              <label data-i18n="labelTags" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Tags (Comma-separated)</label>
-              <input type="text" id="inputTags" placeholder="e.g. Architecture, React, SystemDesign, Mindset" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-            </div>
-          </div>
-
-          <!-- Row 3: Cover Image URL or Preset Gradient -->
-          <div>
-            <label data-i18n="labelCover" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Cover Banner Image (URL or Unsplash Preset)</label>
-            <div class="flex items-center gap-2">
-              <input type="url" id="inputCover" placeholder="https://images.unsplash.com/photo-..." class="flex-grow px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
-              <button type="button" id="randomCoverBtn" class="px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition whitespace-nowrap flex items-center gap-1.5">
-                <i data-lucide="image" class="w-3.5 h-3.5"></i> <span data-i18n="presetImageBtn">Preset Image</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- Row 4: Markdown Editor & Live Preview -->
-          <div>
-            <div class="flex items-center justify-between mb-2">
+              <label data-i18n="labelCover" class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">Cover Banner Image (URL or Unsplash Preset)</label>
               <div class="flex items-center gap-2">
-                <label data-i18n="labelContent" class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Content (Markdown + [[Wikilinks]] Supported)</label>
-              </div>
-              
-              <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
-                <button type="button" id="editorTabWrite" class="px-3 py-1 rounded-lg bg-indigo-600 text-white font-medium">Write</button>
-                <button type="button" id="editorTabPreview" class="px-3 py-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Live Preview</button>
+                <input type="url" id="inputCover" placeholder="https://images.unsplash.com/photo-..." class="flex-grow px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-sm">
+                <button type="button" id="randomCoverBtn" class="px-3.5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition whitespace-nowrap flex items-center gap-1.5">
+                  <i data-lucide="image" class="w-3.5 h-3.5"></i> <span data-i18n="presetImageBtn">Preset Image</span>
+                </button>
               </div>
             </div>
 
-            <!-- Markdown Textarea -->
-            <div id="writePane">
-              <textarea id="inputContent" rows="12" required placeholder="# Key Concepts
+            <!-- Row 4: Markdown Editor & Live Preview -->
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-2">
+                  <label data-i18n="labelContent" class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Content (Markdown + [[Wikilinks]] Supported)</label>
+                </div>
+                
+                <div class="flex items-center gap-1 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
+                  <button type="button" id="editorTabWrite" class="px-3 py-1 rounded-lg bg-indigo-600 text-white font-medium">Write</button>
+                  <button type="button" id="editorTabPreview" class="px-3 py-1 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">Live Preview</button>
+                </div>
+              </div>
+
+              <!-- Markdown Textarea -->
+              <div id="writePane">
+                <textarea id="inputContent" rows="12" required placeholder="# Key Concepts
 Use **markdown** formatting, `code blocks`, lists, quotes, and wikilinks like [[Building Scalable Event-Driven Architectures: Lessons Learned]]!
 
 ```js
 const learn = () => 'Continuous Improvement';
 ```
 " class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-900 dark:text-white font-mono text-sm placeholder-slate-400 dark:placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 leading-relaxed"></textarea>
-            </div>
+              </div>
 
-            <!-- Live Preview Pane -->
-            <div id="previewPane" class="hidden min-h-[300px] p-6 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl overflow-y-auto max-h-[400px]">
-              <div id="livePreviewOutput" class="prose dark:prose-invert max-w-none text-sm">
-                <p class="text-slate-400 italic">Start typing content to see live markdown rendering...</p>
+              <!-- Live Preview Pane -->
+              <div id="previewPane" class="hidden min-h-[300px] p-6 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl overflow-y-auto max-h-[400px]">
+                <div id="livePreviewOutput" class="prose dark:prose-invert max-w-none text-sm">
+                  <p class="text-slate-400 italic">Start typing content to see live markdown rendering...</p>
+                </div>
               </div>
             </div>
           </div>
-        </form>
 
-        <!-- Modal Footer -->
-        <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex items-center justify-between">
-          <button type="button" id="downloadMdBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition flex items-center gap-1.5">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="btnExportMd">Export .md File</span>
-          </button>
-          
-          <div class="flex items-center gap-3">
-            <button type="button" id="cancelEditorBtn" class="px-5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium transition" data-i18n="btnCancel">
-              Cancel
+          <!-- Modal Footer -->
+          <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/50 flex items-center justify-between">
+            <button type="button" id="downloadMdBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-medium transition flex items-center gap-1.5">
+              <i data-lucide="download" class="w-3.5 h-3.5"></i> <span data-i18n="btnExportMd">Export .md File</span>
             </button>
-            <button type="submit" id="savePostBtn" form="postForm" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
-              <i data-lucide="send" class="w-4 h-4"></i> <span data-i18n="btnPublish">Publish Post</span>
-            </button>
+            
+            <div class="flex items-center gap-3">
+              <button type="button" id="cancelEditorBtn" class="px-5 py-2.5 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-sm font-medium transition" data-i18n="btnCancel">
+                Cancel
+              </button>
+              <button type="submit" id="savePostBtn" class="px-6 py-2.5 bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-bold rounded-xl text-sm shadow-lg shadow-indigo-600/30 transition flex items-center gap-2">
+                <i data-lucide="send" class="w-4 h-4"></i> <span data-i18n="btnPublish">Publish Post</span>
+              </button>
+            </div>
           </div>
-        </div>
+        </form>
 
       </div>
     </div>
@@ -432,10 +434,10 @@ const learn = () => 'Continuous Improvement';
   </div>
 
   <!-- JavaScript Modules -->
-  <script src="js/data.js?v=4.0"></script>
-  <script src="js/storage.js?v=4.0"></script>
-  <script src="js/i18n.js?v=4.0"></script>
-  <script src="js/markdown.js?v=4.0"></script>
-  <script src="js/app.js?v=4.0"></script>
+  <script src="js/data.js?v=5.0"></script>
+  <script src="js/storage.js?v=5.0"></script>
+  <script src="js/i18n.js?v=5.0"></script>
+  <script src="js/markdown.js?v=5.0"></script>
+  <script src="js/app.js?v=5.0"></script>
 </body>
 </html>
