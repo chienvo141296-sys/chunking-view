@@ -11,6 +11,18 @@ const PRESET_COVERS = [
 
 const INITIAL_POSTS = [
   {
+    "id": "post-1785488746125",
+    "title": "Tết",
+    "category": "Personal Learning",
+    "excerpt": "Hhh",
+    "content": "Hhh",
+    "tags": [],
+    "cover": "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",
+    "date": "2026-07-31",
+    "readTime": "1 min read",
+    "bookmarked": false
+  },
+  {
     "id": "post-1785488390367",
     "title": "Hi",
     "category": "Personal Learning",
