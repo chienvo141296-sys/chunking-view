@@ -611,7 +611,7 @@ document.addEventListener('DOMContentLoaded', () => {
       StorageManager.exportPostMD(tempPost);
     });
 
-    savePostBtn.addEventListener('click', () => {
+    savePostBtn.addEventListener('click', async () => {
       if (!inputTitle.value.trim()) {
         alert('Please enter a post title');
         return;
@@ -631,27 +631,19 @@ document.addEventListener('DOMContentLoaded', () => {
         content: inputContent.value
       };
 
-      const updatedPosts = StorageManager.upsertPost(postData);
+      showToast('Publishing post & Syncing to GitHub Pages...', 'info');
+      const result = await StorageManager.upsertPost(postData);
       closeEditor();
-
-      // Auto-Sync to live web (GitHub Pages) so mobile phones see the post globally!
-      fetch('/api/sync-posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedPosts)
-      }).then(res => res.json()).then(data => {
-        if (data && data.success) {
-          showToast('Bài viết đã được đồng bộ toàn cầu! (Tự động xuất hiện trên Điện thoại sau ~30s)', 'success');
-        }
-      }).catch(err => {
-        console.log('Local dev server sync inactive', err);
-      });
 
       if (typeof confetti !== 'undefined') {
         confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
       }
 
-      showToast('Article published successfully!', 'success');
+      if (result && result.synced) {
+        showToast('Bài viết đã được xuất bản lên GitHub Pages! (Điện thoại sẽ xem được sau ~30s)', 'success');
+      } else {
+        showToast('Article published & saved successfully!', 'success');
+      }
 
       if (activePostId && activePostId === postData.id) {
         openArticleDetail(postData.id);

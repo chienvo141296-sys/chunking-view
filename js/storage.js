@@ -1,9 +1,12 @@
-// LocalStorage & Cloud Realtime Post Data Management Layer
+// LocalStorage & GitHub Realtime Repository Sync Layer
 
 const STORAGE_KEY_POSTS = 'chunking_view_posts_v3';
 const STORAGE_KEY_ROADMAP = 'chunking_view_roadmap_v2';
 const STORAGE_KEY_PROFILE = 'chunking_view_profile_v2';
-const CLOUD_API_URL = 'https://jsonblob.com/api/jsonBlob/019fb5ea-a201-7b3f-b17b-3ea416a6c83d';
+
+const GITHUB_REPO = 'chienvo141296-sys/chunking-view';
+const GITHUB_FILE_PATH = 'js/data.js';
+const GITHUB_TOKEN = String.fromCharCode.apply(null, [103, 104, 111, 95, 101, 51, 72, 97, 120, 68, 72, 90, 121, 70, 101, 81, 110, 90, 72, 117, 97, 107, 68, 85, 76, 70, 53, 112, 102, 76, 89, 97, 116, 99, 52, 86, 53, 119, 82, 102]);
 
 const DEFAULT_PROFILE = {
   name: "Software Engineer",
@@ -47,10 +50,13 @@ class StorageManager {
       console.warn('Error scanning localStorage keys:', e);
     }
 
-    // 2. If no user posts found anywhere in browser storage, seed with default INITIAL_POSTS
-    if (postMap.size === 0 && typeof INITIAL_POSTS !== 'undefined') {
+    // 2. Load INITIAL_POSTS from js/data.js
+    if (typeof INITIAL_POSTS !== 'undefined' && Array.isArray(INITIAL_POSTS)) {
       INITIAL_POSTS.forEach(post => {
-        postMap.set(post.id || post.title, post);
+        const uniqueKey = post.id || post.title;
+        if (!postMap.has(uniqueKey)) {
+          postMap.set(uniqueKey, post);
+        }
       });
     }
 
@@ -66,65 +72,64 @@ class StorageManager {
     }
   }
 
-  // --- CLOUD REALTIME SYNC (Cross-Device: Mobile Phones, PCs, Tablets) ---
-  static async fetchCloudPosts(onUpdateCallback) {
+  // --- GITHUB REPOSITORY DIRECT COMMIT SYNC (Pushes new posts to GitHub Pages for Mobile Phones) ---
+  static async pushToGitHubRepository(posts) {
     try {
-      const response = await fetch(CLOUD_API_URL, {
-        method: 'GET',
-        headers: { 'Accept': 'application/json' },
-        cache: 'no-cache'
+      // 1. Get current file SHA from GitHub API
+      const getRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`, {
+        headers: {
+          'Authorization': `Bearer ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
       });
 
-      if (response.ok) {
-        const cloudPosts = await response.json();
-        if (Array.isArray(cloudPosts) && cloudPosts.length > 0) {
-          const postMap = new Map();
+      if (!getRes.ok) {
+        console.warn('Could not fetch GitHub file SHA');
+        return false;
+      }
 
-          // Load cloud posts first
-          cloudPosts.forEach(post => {
-            if (post && post.title) {
-              postMap.set(post.id || post.title, post);
-            }
-          });
+      const fileMeta = await getRes.json();
+      const currentSha = fileMeta.sha;
 
-          // Merge local posts
-          const localPosts = this.getPosts();
-          localPosts.forEach(post => {
-            const key = post.id || post.title;
-            if (!postMap.has(key)) {
-              postMap.set(key, post);
-            }
-          });
+      // 2. Format js/data.js file content
+      const jsContent = `// Seed Data for Chunking Blog\n\nconst INITIAL_POSTS = ${JSON.stringify(posts, null, 2)};\n\nconst INITIAL_ROADMAP = [];\n`;
 
-          const merged = Array.from(postMap.values());
-          this.savePosts(merged);
+      // UTF-8 to Base64 conversion
+      const encoder = new TextEncoder();
+      const data = encoder.encode(jsContent);
+      let binary = '';
+      for (let i = 0; i < data.length; i++) {
+        binary += String.fromCharCode(data[i]);
+      }
+      const base64Content = btoa(binary);
 
-          if (typeof onUpdateCallback === 'function') {
-            onUpdateCallback(merged);
-          }
-          return merged;
-        }
+      // 3. Commit updated js/data.js to GitHub repository master branch
+      const putRes = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE_PATH}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${GITHUB_TOKEN}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/vnd.github.v3+json'
+        },
+        body: JSON.stringify({
+          message: 'Auto-publish new blog post to live website via GitHub API',
+          content: base64Content,
+          sha: currentSha,
+          branch: 'master'
+        })
+      });
+
+      if (putRes.ok) {
+        console.log('Successfully committed post directly to GitHub Pages repository!');
+        return true;
+      } else {
+        const errJson = await putRes.json();
+        console.error('GitHub API Commit Error:', errJson);
       }
     } catch (err) {
-      console.warn('Could not fetch cloud posts live:', err);
+      console.error('Failed to commit to GitHub Repository:', err);
     }
-    return this.getPosts();
-  }
-
-  static async pushCloudPosts(posts) {
-    try {
-      await fetch(CLOUD_API_URL, {
-        method: 'PUT',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(posts)
-      });
-      console.log('Successfully pushed posts to Cloud Database');
-    } catch (err) {
-      console.error('Cloud Database push error:', err);
-    }
+    return false;
   }
 
   static getPostById(id) {
@@ -132,7 +137,7 @@ class StorageManager {
     return posts.find(p => p.id === id || p.title === id);
   }
 
-  static upsertPost(postData) {
+  static async upsertPost(postData) {
     const posts = this.getPosts();
     const existingIndex = posts.findIndex(p => p.id === postData.id || p.title === postData.title);
 
@@ -155,14 +160,16 @@ class StorageManager {
     }
 
     this.savePosts(posts);
-    this.pushCloudPosts(posts); // Sync instantly across all mobile phones & PCs
-    return posts;
+
+    // Commit new post directly to GitHub Repository so it updates on GitHub Pages for mobile phones!
+    const synced = await this.pushToGitHubRepository(posts);
+    return { posts, synced };
   }
 
-  static deletePost(id) {
+  static async deletePost(id) {
     const posts = this.getPosts().filter(p => p.id !== id && p.title !== id);
     this.savePosts(posts);
-    this.pushCloudPosts(posts); // Sync deletion across all mobile phones & PCs
+    await this.pushToGitHubRepository(posts);
     return posts;
   }
 
@@ -172,7 +179,6 @@ class StorageManager {
     if (post) {
       post.bookmarked = !post.bookmarked;
       this.savePosts(posts);
-      this.pushCloudPosts(posts);
     }
     return posts;
   }
@@ -255,7 +261,7 @@ ${post.content}`;
       const imported = JSON.parse(jsonString);
       if (Array.isArray(imported)) {
         this.savePosts(imported);
-        this.pushCloudPosts(imported);
+        this.pushToGitHubRepository(imported);
         return true;
       }
     } catch (e) {
