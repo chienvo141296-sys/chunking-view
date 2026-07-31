@@ -1,7 +1,7 @@
 // Main Application Controller for Chungking Blog
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Security Password Config
+  // Security Password Config (Only authorized users with password 150125 can create/edit/delete posts)
   const ADMIN_PASSWORD = '150125';
 
   // State
@@ -86,13 +86,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sessionStorage.getItem('chungking_auth') === 'true') {
       return true;
     }
-    const input = prompt('🔐 Vui lòng nhập mật khẩu quản trị để thực hiện thao tác này:');
+    const input = prompt('🔐 Nhập mật khẩu để mở khóa quyền đăng bài (Password Required):');
     if (input === ADMIN_PASSWORD) {
       sessionStorage.setItem('chungking_auth', 'true');
-      showToast('Xác thực thành công!', 'success');
+      showToast('Xác thực mật khẩu thành công! Bạn có thể đăng bài.', 'success');
       return true;
     } else if (input !== null) {
-      showToast('Mật khẩu không chính xác!', 'error');
+      showToast('Mật khẩu không chính xác! Không thể đăng bài.', 'error');
     }
     return false;
   }
