@@ -1,6 +1,9 @@
-// Main Application Controller for Chunking view Blog
+// Main Application Controller for Chungking Blog
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Security Password Config
+  const ADMIN_PASSWORD = '150125';
+
   // State
   let activeTag = null;
   let searchQuery = '';
@@ -77,6 +80,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const exportAllBtn = document.getElementById('exportAllBtn');
   const importFile = document.getElementById('importFile');
   const navBrand = document.getElementById('navBrand');
+
+  // --- SECURITY AUTHENTICATION CHECK ---
+  function checkAdminAuth() {
+    if (sessionStorage.getItem('chungking_auth') === 'true') {
+      return true;
+    }
+    const input = prompt('🔐 Vui lòng nhập mật khẩu quản trị để thực hiện thao tác này:');
+    if (input === ADMIN_PASSWORD) {
+      sessionStorage.setItem('chungking_auth', 'true');
+      showToast('Xác thực thành công!', 'success');
+      return true;
+    } else if (input !== null) {
+      showToast('Mật khẩu không chính xác!', 'error');
+    }
+    return false;
+  }
 
   // Initialize Application
   function init() {
@@ -341,6 +360,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- POST EDITOR MODAL LOGIC ---
   function openEditor(postId = null) {
+    if (!checkAdminAuth()) return;
+
     if (postId) {
       const post = StorageManager.getPostById(postId);
       if (post) {
@@ -487,6 +508,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     detailDeleteBtn.addEventListener('click', () => {
+      if (!checkAdminAuth()) return;
       if (activePostId && confirm('Are you sure you want to delete this article?')) {
         StorageManager.deletePost(activePostId);
         showToast('Article deleted', 'error');
@@ -578,6 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     importFile.addEventListener('change', (e) => {
+      if (!checkAdminAuth()) return;
       const file = e.target.files[0];
       if (!file) return;
 
