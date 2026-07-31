@@ -611,7 +611,9 @@ document.addEventListener('DOMContentLoaded', () => {
       StorageManager.exportPostMD(tempPost);
     });
 
-    savePostBtn.addEventListener('click', () => {
+    function handleSavePost(e) {
+      if (e) e.preventDefault();
+
       if (!inputTitle.value.trim()) {
         alert('Please enter a post title');
         return;
@@ -638,14 +640,17 @@ document.addEventListener('DOMContentLoaded', () => {
         confetti({ particleCount: 80, spread: 60, origin: { y: 0.6 } });
       }
 
-      showToast('Bài viết đã được đồng bộ toàn cầu! (Điện thoại & PC khác sẽ xem được ngay)', 'success');
+      showToast('Bài viết đã xuất bản & đồng bộ thành công!', 'success');
 
       if (activePostId && activePostId === postData.id) {
         openArticleDetail(postData.id);
       } else {
         switchViewSection('all');
       }
-    });
+    }
+
+    savePostBtn.addEventListener('click', handleSavePost);
+    postForm.addEventListener('submit', handleSavePost);
 
     themeToggleBtn.addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');
